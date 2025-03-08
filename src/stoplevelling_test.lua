@@ -154,6 +154,11 @@ function player.soul:AddPerk(perkid)
     player:called("AddPerk", perkid)
 end
 
+function player.soul:HasPerk(perkid, booly)
+    player:called("HasPerk", perkid, booly)
+    return player:getExpectedReturnValue("HasPerk", perkid)
+end
+
 function player.soul:RemovePerk(perkid)
     player:called("RemovePerk", perkid)
 end
@@ -375,6 +380,8 @@ function Runner:test_trimxp_strength_over_limit()
         else 
             player:expect("GetStatProgress", tostring(k), nil, 0.50);
             player:expect("GetStatLevel", tostring(k), nil, 20);
+            player:expect("HasPerk", v.perk_id);
+            player:expect("AddPerk", v.perk_id);
             StopLevelling.data[k]["limit"] = 5;
         end
     end
@@ -395,6 +402,8 @@ function Runner:test_trimxp_alchemy_over_limit()
         if k == "alchemy" then
             player:expect("GetSkillProgress", tostring(k), nil, 0.60);
             player:expect("GetSkillLevel", tostring(k), nil, 6);
+            player:expect("HasPerk", v.perk_id);
+            player:expect("AddPerk", v.perk_id);
             StopLevelling.data[k]["limit"] = 5;
         else 
             StopLevelling.data[k]["limit"] = 25;

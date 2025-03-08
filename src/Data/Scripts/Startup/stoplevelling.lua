@@ -311,6 +311,13 @@ function StopLevelling:trimxp()
             limit = StopLevelling.data[v.governing_stat]["limit"];
         end
         
+        if currentLevel ~= nil then
+            if tonumber(currentLevel) >= limit then
+                if not player.soul:HasPerk(v.perk_id, false) then
+                    player.soul:AddPerk(v.perk_id)
+                end
+            end
+        end
         -- only > 20% progress, above limit level, gets XP trimmed
         if currentProgress ~= nil and currentLevel ~= nil then
             if tonumber(currentProgress) >= 0.2 and tonumber(currentLevel) >= limit then
