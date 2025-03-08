@@ -4,7 +4,7 @@ Block the player's xp at desired levels.
 
 ## Motivation
 
-1. Henry is OP, and in a realistic setting that KCD2 pretends to be, there is no room for an unstoppable slayer like Henry can become in the vanilla game. This mod aims to correct that.
+1. Henry is OP, and in the realistic setting that KCD2 pretends to be, there is no room for an unstoppable slayer like Henry can become in the vanilla game. This mod aims to correct that.
 
 2. At higher levels, a lot of RPG elements are lost because Henry is simply too powerful, and the system does not allow stats to go higher than 30, no matter what.
     - This also means that perks that add to your skills, permanently or conditionally, like Leshy I & II or Deft Hands, are completely lost after a certain point.
@@ -18,7 +18,7 @@ E.g. if you wanted a knight, warrior monk, or assasin builds, you would setup st
 class      knight    monk    assasin
 --------------------------------------
 strength       22      12         13
-agility        14      9         22
+agility        14       9         22
 vitality       20      15         12
 speech         16      20          9
 ```
