@@ -10,22 +10,23 @@ Block the player's xp at desired levels.
     - This also means that perks that add to your skills, permanently or conditionally, like Leshy I & II or Deft Hands, are completely lost after a certain point.
     - By having a lower limit for Stats and Skills, buffs from perks and potions will matter more.
 
-The intent is to set limits on stats, and create a stat-skill dependency that governs the "build" of the character.
-
 E.g. if you wanted a knight, warrior monk, or assasin builds, you would setup stats like:
 
 ```
 class      knight    monk    assasin
---------------------------------------
+------------------------------------
 strength       22      12         13
 agility        14       9         22
-vitality       20      15         12
+vitality       20      18         12
 speech         16      20          9
 ```
 
-The skill dependencies are all configurable and optional as well. Below are the deault values, which can be configured either in-game or through the `mod.cnf`.
+The mod creates a stat-skill dependency that governs the "build" of the character. This means that Skills that depend on a specific Stat, would never go higher than the governing Stat.
+- e.g. `drinking,horse_riding,weapon_unarmed` all depend on `vitality` (default values), this means that, for the `assasin` class defined above, neither of these skills would ever go past `12`.
 
-You can also choose to turn these off and set individual limits for each stat with `STOPLEVELLING-SET-skills_limits_inherit_stats false`.
+The skill dependencies are all configurable, as well as optional. Below are the deault values, which can be changed either in-game or through the `mod.cnf`.
+
+You can also choose to turn these off and set individual limits for each skill with `STOPLEVELLING-SET-skills_limits_inherit_stats false`.
 
 ```
 strength: craftsmanship,heavy_weapons,survival,weapon_large,fencing
@@ -58,7 +59,11 @@ These can be blocked completely. Those that are not on this list, are have their
 - Their current XP progress is >= 20%
 - The current skill or stat is >= the limit set in config.
 
+There are caveats around this approach, mainly that XP isn't really stopped, only controlled. A quest reward or skill book might shoot you past the desired limit, and there is no way to go back a level.
+
 ## Config
+
+Set these in `mod.cnf`.
 
 Each of these is added as a console function: you can configure these values in-game.
 
