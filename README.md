@@ -69,7 +69,7 @@ Each of these is added as a console function: you can configure these values in-
 
 ### Time in milliseconds to check XP levels and reduce it.
 ```
-STOPLEVELLING-SET-xp_nerf_timer_period 30000
+STOPLEVELLING-SET-xp_trim_timer_period 30000
 ```
 
 ### Stat limits for your build.

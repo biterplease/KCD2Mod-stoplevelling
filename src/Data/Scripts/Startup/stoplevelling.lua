@@ -8,7 +8,7 @@ StopLevelling.isCommandLineBuild = false
 -- ########################################
 
 -- Time in milliseconds to check XP levels and reduce it.
-StopLevelling.xp_nerf_timer_period = 30000;
+StopLevelling.xp_trim_timer_period = 30000;
 
 -- Stat limits for your build.
 StopLevelling.limit_strength = 20;
@@ -80,11 +80,13 @@ StopLevelling.data = {
     weapon_unarmed =    {name = "Unarmed",       governing_stat = 'vitality', perk_id = '93551fe9-bb0c-4242-8aea-8de2db44952e', is_stat = false, limit = 20},
 };
 
+StopLevelling.xp_trim_timer_id = nil;
+
 
 function StopLevelling:init()
     System.LogAlways("$5[INFO][StopLevelling] StopLevelling Initialized");
 
-    System.AddCCommand("STOPLEVELLING-SET-xp_nerf_timer_period", "StopLevelling:set_xp_nerf_timer_period(%line)", "");
+    System.AddCCommand("STOPLEVELLING-SET-xp_trim_timer_period", "StopLevelling:set_xp_trim_timer_period(%line)", "");
     System.AddCCommand("STOPLEVELLING-SET-skills_limits_inherit_stats", "StopLevelling:set_skills_limits_inherit_stats(%line)", "");
     System.AddCCommand("STOPLEVELLING-SET-skills_strength", "StopLevelling:set_skills_strength(%line)", "");
     System.AddCCommand("STOPLEVELLING-SET-skills_agility", "StopLevelling:set_skills_agility(%line)", "");
@@ -120,8 +122,8 @@ end
 --
 -- Config setters
 -- 
-function StopLevelling:set_xp_nerf_timer_period(line)
-    StopLevelling.xp_nerf_timer_period = tonumber(line);
+function StopLevelling:set_xp_trim_timer_period(line)
+    StopLevelling.xp_trim_timer_period = tonumber(line);
 end
 
 function StopLevelling:set_skills_limits_inherit_stats(line)
@@ -350,6 +352,26 @@ function StopLevelling:remove_all_perks()
     end
 end
 
+function StopLevelling:initTimers()
+	System.LogAlways("$5[INFO][StopLevelling] Init timers");
+    if StopLevelling.xp_trim_timer_id ~= nil then
+        Script.KillTimer(StopLevelling.xp_trim_timer_id)
+        StopLevelling.xp_trim_timer_id = nil
+    end
+    StopLevelling.xp_trim_timer_id = Script.SetTimer(StopLevelling.xp_trim_timer_period, function(nTimerId)
+        StopLevelling:xp_trim_timer_callback(nTimerId)
+    end)
+end
+
+function StopLevelling:xp_trim_timer_callback(nTimerId)
+    -- Restart timer
+    StopLevelling.xp_trim_timer_id = Script.SetTimer(StopLevelling.xp_trim_timer_period, function(nTimerId)
+        StopLevelling:xp_trim_timer_callback(nTimerId)
+    end)
+
+	StopLevelling:trimxp();
+
+end
 
 
 function StopLevelling:loadCfg(actionName, eventName, argTable)
@@ -382,6 +404,11 @@ function StopLevelling:uiEventSystemListener(actionName, eventName, argTable)
     System.LogAlways("$5[INFO][StopLevelling] StopLevelling:uiEventSystemListener called")
 end
 UIAction.RegisterEventSystemListener(StopLevelling, "", "", "uiEventSystemListener");
+
+-- Credits to: https://next.nexusmods.com/profile/VadimCool?gameId=2298
+function StopLevelling:GameLoaded(elementName, instanceId, eventName, argTable)
+	StopLevelling:initTimers();
+end
 
 StopLevelling:init();
 -- enable for tests to work

@@ -12,6 +12,8 @@ end
 Script = {}
 Script["SetTimer"] = function()
 end
+Script["KillTimer"] = function()
+end
 UIAction = {}
 UIAction["RegisterActionListener"] = function()
 end
