@@ -8,3 +8,6 @@ export:
 	@cp ./src/mod.manifest "${EXPORTDIR}/"
 	@7z a -tzip "${EXPORTDIR}/StopLevelling.pak" ./src/Data/Scripts ./src/Data/Libs -r -mtm=off -mtc=off -mta=off
 	@cp ./pkg/StopLevelling.pak "${EXPORTDIR}/Data/"
+
+test:
+	@lua ./src/stoplevelling_test.lua
