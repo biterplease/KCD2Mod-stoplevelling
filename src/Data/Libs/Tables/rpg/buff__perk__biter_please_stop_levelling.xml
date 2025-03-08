@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="barbora" xsi:noNamespaceSchemaLocation="../database.xsd">
+	<buffs version="1">
+	<!-- <buff buff_class_id="15" buff_exclusivity_id="1" buff_id="3abfb65b-ec73-4f52-9bf9-c0a6a044b687" buff_lifetime_id="0" buff_name="prepadeni_XpGainNullifier" buff_params="xpm*0" duration="-1" implementation="Cpp:Constant" is_persistent="false" /> -->
+		<!-- Stop levelling buffs -->
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="ae1e37ce-f6f7-4125-8742-a7d099239e26" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_all" buff_params="xpm*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+
+		<!-- Stat blockers -->
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="8b77a709-e29a-4afa-aff4-52788563e089" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_strength" buff_params="xst*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="e89ac30e-0a15-41ce-93a6-84df776afb4f" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_agility" buff_params="xag*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="0898b10e-1264-4bb6-a077-9579ea6ef9b1" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_vitality" buff_params="xvi*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+		<!-- <buff buff_class_id="4" buff_exclusivity_id="1" buff_id="d24b55f1-375d-4f2a-a31a-9fb09a54ef28" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_speech" buff_params="xsp*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" /> not working -->
+		<!-- Stat blockers -->
+
+		<!-- Non-combat skill blockers -->
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="711fcd82-1800-41c8-85e5-40ff0d703540" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_craftsmanship" buff_params="xcr*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+		<!-- <buff buff_class_id="4" buff_exclusivity_id="1" buff_id="d78bf91d-5957-4446-a04e-d92c39d6e4e2" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_drinking" buff_params="xal*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" /> -->
+		<!-- <buff buff_class_id="4" buff_exclusivity_id="1" buff_id="2ca1525b-4e32-42f7-a16e-4a8cce24c7da" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_horse_riding" buff_params="xhr*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" /> -->
+		<!-- <buff buff_class_id="4" buff_exclusivity_id="1" buff_id="3eb740ff-c829-4005-a001-83970334ce99" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_houndmaster" buff_params="xhs*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistenast="true" /> -->
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="cd6ee44a-cf51-459e-a86c-6218e9ecd91f" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_scholarship" buff_params="xsc*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+		<!-- <buff buff_class_id="4" buff_exclusivity_id="1" buff_id="3354f3a7-dc93-4aa2-9d0d-c93d5c4c3d07" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_stealth" buff_params="xss*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />  -->
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="d2465c4d-6891-41f3-b77c-f53dce8186ad" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_survival" buff_params="xsu*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+		<!-- <buff buff_class_id="4" buff_exclusivity_id="1" buff_id="e1bcaa44-daa8-473d-b75c-8428d8d73880" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_thievery" buff_params="xth*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />  -->
+		<!-- Non-combat skill blockers -->
+
+		<!-- Combat skill blockers -->
+		<!-- <buff buff_class_id="4" buff_exclusivity_id="1" buff_id="da9f0484-e668-4716-946c-6a7a97464925" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_warfare" buff_params="xfe*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" /> -->
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="47d2ffab-a825-4af1-a7ba-3c4cf915aa5f" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_weapon_sword" buff_params="xsw*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="03eb71f7-5b5d-4657-822a-6abd88a42f5f" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_heavy_weapons" buff_params="xhw*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" /> 
+		<!-- <buff buff_class_id="4" buff_exclusivity_id="1" buff_id="51336b10-7288-4954-b6c3-99b2a1397a92" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_weapon_large" buff_params="xwl*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" /> -->
+		<!-- <buff buff_class_id="4" buff_exclusivity_id="1" buff_id="259aebcf-c3ca-44c9-a6f2-8feebbe559be" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_weapon_unarmed" buff_params="xwu*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" /> -->
+		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="b8984b3b-637f-4d49-a0e1-62b79a4b137c" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_marksmanship" buff_params="xma*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+		<!-- Combat skill blockers -->
+
+		<!-- Stop levelling buffs -->
+	</buffs>
+</database>
