@@ -10,7 +10,7 @@ export:
 		./src/Data/Scripts \
 		./src/Data/Libs -r -mtm=off -mtc=off -mta=off
 
-	@zip ./zips/biterplease_stop_levelling.zip \
+	@zip ./zips/StopLevelling.zip \
 		./biterplease_stop_levelling/Data/StopLevelling.pak \
 		./biterplease_stop_levelling/mod.manifest \
 		./biterplease_stop_levelling/mod.cfg \
