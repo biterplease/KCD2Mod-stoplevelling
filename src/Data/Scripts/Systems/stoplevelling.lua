@@ -297,7 +297,6 @@ function StopLevelling:skillDeps()
 end
 
 function StopLevelling:trimxp()
-    System.LogAlways("$3[DEBUG][StopLevelling] trimxp:");
     for k, v in pairs(StopLevelling.data) do
         local currentProgress = 0.0;
         local currentLevel = 0;
@@ -314,13 +313,15 @@ function StopLevelling:trimxp()
         if not v.is_stat and StopLevelling.skills_limits_inherit_stats then
             limit = StopLevelling.data[v.governing_stat]["limit"];
         end
+        local noun = "Stat"
+        if not v.is_stat then noun = "Skill" end
         
         if currentLevel ~= nil then
             if tonumber(currentLevel) >= limit then
                 local alreadyHasPerk = player.soul:HasPerk(v.perk_id, false);
                 if alreadyHasPerk ~= nil then
                     if not alreadyHasPerk and not v.perk_added then
-                        System.LogAlways(string.format("$5[INFO][StopLevelling] adding XP blocking perk for attribute %s", tostring(k)));
+                        System.LogAlways(string.format("$5[INFO][StopLevelling] adding XP blocking perk for %s %s (%s)", noun, tostring(k), tostring(v.name)));
                         player.soul:AddPerk(v.perk_id)
                         v.perk_added = true;
                     end
@@ -334,7 +335,7 @@ function StopLevelling:trimxp()
                     -- ideally we would call player.soul:GetNextLevelStatXP or player.soul:GetNextLevelSkillXP
                     -- to get the exact amount and remove all XP, but those methods don't seem to return anything
                     -- at the moment
-                    System.LogAlways(string.format("$5[INFO][StopLevelling] trimming XP for %s", tostring(k)));
+                    System.LogAlways(string.format("$5[INFO][StopLevelling] trimming XP for %s %s (%s)", noun, tostring(k), tostring(v.name)));
                     if v.is_stat then
                         player.soul:AddStatXP(tostring(k), -50);
                     else
