@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="barbora" xsi:noNamespaceSchemaLocation="../database.xsd">
+	<perk_buffs version="1">
+		<perk_buff buff_id="ae1e37ce-f6f7-4125-8742-a7d099239e26" perk_id="73ed4a04-13d4-4c50-a1eb-c919bbf13135" /> <!-- all-->
+
+		<perk_buff buff_id="8b77a709-e29a-4afa-aff4-52788563e089" perk_id="59fb8183-8474-4f60-aed0-eb6afe572e53" /> <!-- strength-->
+		<perk_buff buff_id="e89ac30e-0a15-41ce-93a6-84df776afb4f" perk_id="03b7b530-0f9d-41e6-996f-8a39bb0d070c" /> <!-- agility-->
+		<perk_buff buff_id="0898b10e-1264-4bb6-a077-9579ea6ef9b1" perk_id="74251454-09b1-4c22-b36e-ac6177bc4c3b" /> <!-- vitality-->
+		<perk_buff buff_id="d24b55f1-375d-4f2a-a31a-9fb09a54ef28" perk_id="77368463-bda8-4043-b872-dab47857580b" /> <!-- speech-->
+
+		<perk_buff buff_id="a290c280-99d1-45dc-a4de-b291e067ebae" perk_id="da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2" /> <!-- alchemy-->
+		<perk_buff buff_id="711fcd82-1800-41c8-85e5-40ff0d703540" perk_id="2f2b9d82-9a91-40f0-bedb-ab53cb333127" /> <!-- craftsmanship-->
+		<perk_buff buff_id="d78bf91d-5957-4446-a04e-d92c39d6e4e2" perk_id="e3da758a-3c05-4109-a7b9-8fa7bbf48824" /> <!-- drinking-->
+		<perk_buff buff_id="2ca1525b-4e32-42f7-a16e-4a8cce24c7da" perk_id="89ac270e-20b2-4381-96d6-27cf791e944f" /> <!-- horse_riding-->
+		<perk_buff buff_id="3eb740ff-c829-4005-a001-83970334ce99" perk_id="c76cce08-5fa9-4441-a44e-01c5d4a4a9d9" /> <!-- houndmaster-->
+		<perk_buff buff_id="cd6ee44a-cf51-459e-a86c-6218e9ecd91f" perk_id="0341d739-e37b-4b10-84c2-eee6e323493c" /> <!-- scholarship-->
+		<perk_buff buff_id="3354f3a7-dc93-4aa2-9d0d-c93d5c4c3d07" perk_id="4d0d74ce-3e4e-4683-908e-61546b0b0b2e" /> <!-- stealth-->
+		<perk_buff buff_id="d2465c4d-6891-41f3-b77c-f53dce8186ad" perk_id="1ede484d-b2bf-4c4b-a275-e9fa765bc7d3" /> <!-- survival-->
+		<perk_buff buff_id="e1bcaa44-daa8-473d-b75c-8428d8d73880" perk_id="743554e5-5af4-4cd0-9844-f579c2020392" /> <!-- thievery-->
+
+		<perk_buff buff_id="da9f0484-e668-4716-946c-6a7a97464925" perk_id="4e0a8900-d9bc-49f8-bd36-fcded2c1ad79" /> <!-- warfare-->
+		<perk_buff buff_id="47d2ffab-a825-4af1-a7ba-3c4cf915aa5f" perk_id="9a28f2ca-c48c-4747-a574-c0d233144206" /> <!-- swords-->
+		<perk_buff buff_id="03eb71f7-5b5d-4657-822a-6abd88a42f5f" perk_id="52a593f8-3fc7-46d8-a389-4ca47cd3a22e" /> <!-- heavy_weapons-->
+		<perk_buff buff_id="51336b10-7288-4954-b6c3-99b2a1397a92" perk_id="98bb8ae8-1fc3-4ac0-8784-58106a421abf" /> <!-- weapon_large-->
+		<perk_buff buff_id="259aebcf-c3ca-44c9-a6f2-8feebbe559be" perk_id="93551fe9-bb0c-4242-8aea-8de2db44952e" /> <!-- weapon_unarmed -->
+		<perk_buff buff_id="b8984b3b-637f-4d49-a0e1-62b79a4b137c" perk_id="643ff10b-534d-4a1b-99ae-971fb085d1d8" /> <!-- marksmanship-->
+	</perk_buffs>
+</database>
