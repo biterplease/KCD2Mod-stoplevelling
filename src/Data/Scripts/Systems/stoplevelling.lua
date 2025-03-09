@@ -1,14 +1,12 @@
 System.LogAlways("$5[INFO][StopLevelling] ### STOP LEVELLING ###");
 StopLevelling = {};
-StopLevelling.devHome = ""
-StopLevelling.isCommandLineBuild = false
 
 -- ########################################
 --      Stop levelling USER editable
 -- ########################################
 
 -- Time in milliseconds to check XP levels and reduce it.
-StopLevelling.xp_trim_timer_period = 30000;
+StopLevelling.xp_trim_timer_period = 15000;
 
 -- Stat limits for your build.
 StopLevelling.limit_strength = 20;
