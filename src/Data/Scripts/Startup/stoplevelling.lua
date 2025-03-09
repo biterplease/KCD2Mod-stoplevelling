@@ -59,25 +59,25 @@ StopLevelling.limit_horse_riding = 20;
 StopLevelling.limit_weapon_unarmed = 20;
 
 StopLevelling.data = {
-    strength =          {name = "Strength",      governing_stat = nil,        perk_id = '59fb8183-8474-4f60-aed0-eb6afe572e53', is_stat = true , limit = 20},
-    agility =           {name = "Agility",       governing_stat = nil,        perk_id = '03b7b530-0f9d-41e6-996f-8a39bb0d070c', is_stat = true , limit = 20},
-    vitality =          {name = "Vitality",      governing_stat = nil,        perk_id = '74251454-09b1-4c22-b36e-ac6177bc4c3b', is_stat = true , limit = 20},
-    speech =            {name = "Speech",        governing_stat = nil,        perk_id = '77368463-bda8-4043-b872-dab47857580b', is_stat = true , limit = 20},
-    craftsmanship =     {name = "Craftsmanship", governing_stat = 'strength', perk_id = '2f2b9d82-9a91-40f0-bedb-ab53cb333127', is_stat = false, limit = 20},
-    heavy_weapons =     {name = "Heavy Weapons", governing_stat = 'strength', perk_id = '52a593f8-3fc7-46d8-a389-4ca47cd3a22e', is_stat = false, limit = 20},
-    survival =          {name = "Survival",      governing_stat = 'strength', perk_id = '1ede484d-b2bf-4c4b-a275-e9fa765bc7d3', is_stat = false, limit = 20},
-    weapon_large =      {name = "Polearms",      governing_stat = 'strength', perk_id = '98bb8ae8-1fc3-4ac0-8784-58106a421abf', is_stat = false, limit = 20},
-    fencing =           {name = "Warfare",       governing_stat = 'strength', perk_id = '4e0a8900-d9bc-49f8-bd36-fcded2c1ad79', is_stat = false, limit = 20},
-    marksmanship =      {name = "Marksmanship",  governing_stat = 'agility',  perk_id = '643ff10b-534d-4a1b-99ae-971fb085d1d8', is_stat = false, limit = 20},
-    stealth =           {name = "Stealth",       governing_stat = 'agility',  perk_id = '4d0d74ce-3e4e-4683-908e-61546b0b0b2e', is_stat = false, limit = 20},
-    thievery =          {name = "Thievery",      governing_stat = 'agility',  perk_id = '743554e5-5af4-4cd0-9844-f579c2020392', is_stat = false, limit = 20},
-    weapon_sword =      {name = "Swords",        governing_stat = 'agility',  perk_id = '9a28f2ca-c48c-4747-a574-c0d233144206', is_stat = false, limit = 20},
-    alchemy =           {name = "Alchemy",       governing_stat = 'speech',   perk_id = 'da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2', is_stat = false, limit = 20},
-    houndmaster =       {name = "Houndmaster",   governing_stat = 'speech',   perk_id = 'c76cce08-5fa9-4441-a44e-01c5d4a4a9d9', is_stat = false, limit = 20},
-    scholarship =       {name = "Scholarship",   governing_stat = 'speech',   perk_id = '0341d739-e37b-4b10-84c2-eee6e323493c', is_stat = false, limit = 20},
-    drinking =          {name = "Drinking",      governing_stat = 'vitality', perk_id = 'e3da758a-3c05-4109-a7b9-8fa7bbf48824', is_stat = false, limit = 20},
-    horse_riding =      {name = "Horseriding",   governing_stat = 'vitality', perk_id = '89ac270e-20b2-4381-96d6-27cf791e944f', is_stat = false, limit = 20},
-    weapon_unarmed =    {name = "Unarmed",       governing_stat = 'vitality', perk_id = '93551fe9-bb0c-4242-8aea-8de2db44952e', is_stat = false, limit = 20},
+    strength =          {name = "Strength",      governing_stat = nil,        perk_id = '59fb8183-8474-4f60-aed0-eb6afe572e53', is_stat = true , limit = 20, perk_blocks_fully=true, perk_added=false},
+    agility =           {name = "Agility",       governing_stat = nil,        perk_id = '03b7b530-0f9d-41e6-996f-8a39bb0d070c', is_stat = true , limit = 20, perk_blocks_fully=true, perk_added=false},
+    vitality =          {name = "Vitality",      governing_stat = nil,        perk_id = '74251454-09b1-4c22-b36e-ac6177bc4c3b', is_stat = true , limit = 20, perk_blocks_fully=true, perk_added=false},
+    speech =            {name = "Speech",        governing_stat = nil,        perk_id = '77368463-bda8-4043-b872-dab47857580b', is_stat = true , limit = 20, perk_blocks_fully=false, perk_added=false},
+    craftsmanship =     {name = "Craftsmanship", governing_stat = 'strength', perk_id = '2f2b9d82-9a91-40f0-bedb-ab53cb333127', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
+    heavy_weapons =     {name = "Heavy Weapons", governing_stat = 'strength', perk_id = '52a593f8-3fc7-46d8-a389-4ca47cd3a22e', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
+    survival =          {name = "Survival",      governing_stat = 'strength', perk_id = '1ede484d-b2bf-4c4b-a275-e9fa765bc7d3', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
+    weapon_large =      {name = "Polearms",      governing_stat = 'strength', perk_id = '98bb8ae8-1fc3-4ac0-8784-58106a421abf', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
+    fencing =           {name = "Warfare",       governing_stat = 'strength', perk_id = '4e0a8900-d9bc-49f8-bd36-fcded2c1ad79', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
+    marksmanship =      {name = "Marksmanship",  governing_stat = 'agility',  perk_id = '643ff10b-534d-4a1b-99ae-971fb085d1d8', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
+    stealth =           {name = "Stealth",       governing_stat = 'agility',  perk_id = '4d0d74ce-3e4e-4683-908e-61546b0b0b2e', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
+    thievery =          {name = "Thievery",      governing_stat = 'agility',  perk_id = '743554e5-5af4-4cd0-9844-f579c2020392', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
+    weapon_sword =      {name = "Swords",        governing_stat = 'agility',  perk_id = '9a28f2ca-c48c-4747-a574-c0d233144206', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
+    alchemy =           {name = "Alchemy",       governing_stat = 'speech',   perk_id = 'da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
+    houndmaster =       {name = "Houndmaster",   governing_stat = 'speech',   perk_id = 'c76cce08-5fa9-4441-a44e-01c5d4a4a9d9', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
+    scholarship =       {name = "Scholarship",   governing_stat = 'speech',   perk_id = '0341d739-e37b-4b10-84c2-eee6e323493c', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
+    drinking =          {name = "Drinking",      governing_stat = 'vitality', perk_id = 'e3da758a-3c05-4109-a7b9-8fa7bbf48824', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
+    horse_riding =      {name = "Horseriding",   governing_stat = 'vitality', perk_id = '89ac270e-20b2-4381-96d6-27cf791e944f', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
+    weapon_unarmed =    {name = "Unarmed",       governing_stat = 'vitality', perk_id = '93551fe9-bb0c-4242-8aea-8de2db44952e', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
 };
 
 StopLevelling.xp_trim_timer_id = nil;
@@ -86,47 +86,48 @@ StopLevelling.xp_trim_timer_id = nil;
 function StopLevelling:init()
     System.LogAlways("$5[INFO][StopLevelling] StopLevelling Initialized");
 
-    System.AddCCommand("STOPLEVELLING-SET-xp_trim_timer_period", "StopLevelling:set_xp_trim_timer_period(%line)", "");
-    System.AddCCommand("STOPLEVELLING-SET-skills_limits_inherit_stats", "StopLevelling:set_skills_limits_inherit_stats(%line)", "");
-    System.AddCCommand("STOPLEVELLING-SET-skills_strength", "StopLevelling:set_skills_strength(%line)", "");
-    System.AddCCommand("STOPLEVELLING-SET-skills_agility", "StopLevelling:set_skills_agility(%line)", "");
-    System.AddCCommand("STOPLEVELLING-SET-skills_vitality", "StopLevelling:set_skills_vitality(%line)", "");
-    System.AddCCommand("STOPLEVELLING-SET-skills_speech", "StopLevelling:set_skills_speech(%line)", "");
-    System.AddCCommand("STOPLEVELLING-SET-limit_strength", "StopLevelling:set_limit_strength(%line)", "Set limit for Stat strength");
-    System.AddCCommand("STOPLEVELLING-SET-limit_agility", "StopLevelling:set_limit_agility(%line)", "Set limit for Stat agility");
-    System.AddCCommand("STOPLEVELLING-SET-limit_vitality", "StopLevelling:set_limit_vitality(%line)", "Set limit for Stat vitality");
-    System.AddCCommand("STOPLEVELLING-SET-limit_speech", "StopLevelling:set_limit_speech(%line)", "Set limit for Stat speech");
-    System.AddCCommand("STOPLEVELLING-SET-limit_craftsmanship", "StopLevelling:set_limit_craftsmanship(%line)", "Set limit for Skill craftsmanship");
-    System.AddCCommand("STOPLEVELLING-SET-limit_heavy_weapons", "StopLevelling:set_limit_heavy_weapons(%line)", "Set limit for Skill heavy_weapons");
-    System.AddCCommand("STOPLEVELLING-SET-limit_survival", "StopLevelling:set_limit_survival(%line)", "Set limit for Skill survival");
-    System.AddCCommand("STOPLEVELLING-SET-limit_weapon_large", "StopLevelling:set_limit_weapon_large(%line)", "Set limit for Skill weapon_large (Polearms)");
-    System.AddCCommand("STOPLEVELLING-SET-limit_fencing", "StopLevelling:set_limit_fencing(%line)", "Set limit for Skill fencing (Warfare)");
-    System.AddCCommand("STOPLEVELLING-SET-limit_marksmanship", "StopLevelling:set_limit_marksmanship(%line)", "Set limit for Skill marksmanship");
-    System.AddCCommand("STOPLEVELLING-SET-limit_stealth", "StopLevelling:set_limit_stealth(%line)", "Set limit for Skill stealth");
-    System.AddCCommand("STOPLEVELLING-SET-limit_thievery", "StopLevelling:set_limit_thievery(%line)", "Set limit for Skill thievery");
-    System.AddCCommand("STOPLEVELLING-SET-limit_weapon_sword", "StopLevelling:set_limit_weapon_sword(%line)", "Set limit for Skill weapon_sword");
-    System.AddCCommand("STOPLEVELLING-SET-limit_alchemy", "StopLevelling:set_limit_alchemy(%line)", "Set limit for Skill alchemy");
-    System.AddCCommand("STOPLEVELLING-SET-limit_houndmaster", "StopLevelling:set_limit_houndmaster(%line)", "Set limit for Skill houndmaster");
-    System.AddCCommand("STOPLEVELLING-SET-limit_scholarship", "StopLevelling:set_limit_scholarship(%line)", "Set limit for Skill scholarship");
-    System.AddCCommand("STOPLEVELLING-SET-limit_drinking", "StopLevelling:set_limit_drinking(%line)", "Set limit for Skill drinking");
-    System.AddCCommand("STOPLEVELLING-SET-limit_horse_riding", "StopLevelling:set_limit_horse_riding(%line)", "Set limit for Skill horse_riding");
-    System.AddCCommand("STOPLEVELLING-SET-limit_weapon_unarmed", "StopLevelling:set_limit_weapon_unarmed(%line)", "Set limit for Skill weapon_unarmed");
+    System.AddCCommand("STOPLEVELLING-SET-xp_trim_timer_period", "StopLevelling:setXpTrimTimerPeriod(%line)", "");
+    System.AddCCommand("STOPLEVELLING-SET-skills_limits_inherit_stats", "StopLevelling:setSkillLimitsInheritStats(%line)", "");
+    System.AddCCommand("STOPLEVELLING-SET-skills_strength", "StopLevelling:setSkillsStrength(%line)", "");
+    System.AddCCommand("STOPLEVELLING-SET-skills_agility", "StopLevelling:setSkillsAgility(%line)", "");
+    System.AddCCommand("STOPLEVELLING-SET-skills_vitality", "StopLevelling:setSkillsVitality(%line)", "");
+    System.AddCCommand("STOPLEVELLING-SET-skills_speech", "StopLevelling:setSkillsSpeech(%line)", "");
+    System.AddCCommand("STOPLEVELLING-SET-limit_strength", "StopLevelling:setLimitStrength(%line)", "Set limit for Stat strength");
+    System.AddCCommand("STOPLEVELLING-SET-limit_agility", "StopLevelling:setLimitAgility(%line)", "Set limit for Stat agility");
+    System.AddCCommand("STOPLEVELLING-SET-limit_vitality", "StopLevelling:setLimitVitality(%line)", "Set limit for Stat vitality");
+    System.AddCCommand("STOPLEVELLING-SET-limit_speech", "StopLevelling:setLimitSpeech(%line)", "Set limit for Stat speech");
+    System.AddCCommand("STOPLEVELLING-SET-limit_craftsmanship", "StopLevelling:setLimitCraftsmanship(%line)", "Set limit for Skill craftsmanship");
+    System.AddCCommand("STOPLEVELLING-SET-limit_heavy_weapons", "StopLevelling:setLimitHeavyWeapons(%line)", "Set limit for Skill heavy_weapons");
+    System.AddCCommand("STOPLEVELLING-SET-limit_survival", "StopLevelling:setLimitSurvival(%line)", "Set limit for Skill survival");
+    System.AddCCommand("STOPLEVELLING-SET-limit_weapon_large", "StopLevelling:setLimitWeaponLarge(%line)", "Set limit for Skill weapon_large (Polearms)");
+    System.AddCCommand("STOPLEVELLING-SET-limit_fencing", "StopLevelling:setLimitFencing(%line)", "Set limit for Skill fencing (Warfare)");
+    System.AddCCommand("STOPLEVELLING-SET-limit_marksmanship", "StopLevelling:setLimitMarksmanship(%line)", "Set limit for Skill marksmanship");
+    System.AddCCommand("STOPLEVELLING-SET-limit_stealth", "StopLevelling:setLimitStealth(%line)", "Set limit for Skill stealth");
+    System.AddCCommand("STOPLEVELLING-SET-limit_thievery", "StopLevelling:setLimitThievery(%line)", "Set limit for Skill thievery");
+    System.AddCCommand("STOPLEVELLING-SET-limit_weapon_sword", "StopLevelling:setLimitWeaponSword(%line)", "Set limit for Skill weapon_sword");
+    System.AddCCommand("STOPLEVELLING-SET-limit_alchemy", "StopLevelling:setLimitAlchemy(%line)", "Set limit for Skill alchemy");
+    System.AddCCommand("STOPLEVELLING-SET-limit_houndmaster", "StopLevelling:setLimitHoundmaster(%line)", "Set limit for Skill houndmaster");
+    System.AddCCommand("STOPLEVELLING-SET-limit_scholarship", "StopLevelling:setLimitScholarship(%line)", "Set limit for Skill scholarship");
+    System.AddCCommand("STOPLEVELLING-SET-limit_drinking", "StopLevelling:setLimitDrinking(%line)", "Set limit for Skill drinking");
+    System.AddCCommand("STOPLEVELLING-SET-limit_horse_riding", "StopLevelling:setLimitHorseRiding(%line)", "Set limit for Skill horse_riding");
+    System.AddCCommand("STOPLEVELLING-SET-limit_weapon_unarmed", "StopLevelling:setLimitWeaponUnarmed(%line)", "Set limit for Skill weapon_unarmed");
 
     System.AddCCommand("stoplevelling_limits", "StopLevelling:limits()", "show stat and skill limits")
     System.AddCCommand("stoplevelling_skill_deps", "StopLevelling:skillDeps()", "show skill-stat relation")
-    System.AddCCommand("stoplevelling_add_all_perks", "StopLevelling:add_all_perks()", "Add all xp-blocking perks to the player.")
-    System.AddCCommand("stoplevelling_remove_all_perks", "StopLevelling:remove_all_perks()", "Add all xp-blocking perks to the player.")
+    System.AddCCommand("stoplevelling_add_all_perks", "StopLevelling:addAllPerks()", "Add all xp-blocking perks to the player.")
+    System.AddCCommand("stoplevelling_remove_all_perks", "StopLevelling:removeAllPerks()", "Add all xp-blocking perks to the player.")
+    System.AddCCommand("stoplevelling_trimnow", "StopLevelling:trimxp()", "")
 end
 
 
 --
 -- Config setters
 -- 
-function StopLevelling:set_xp_trim_timer_period(line)
+function StopLevelling:setXpTrimTimerPeriod(line)
     StopLevelling.xp_trim_timer_period = tonumber(line);
 end
 
-function StopLevelling:set_skills_limits_inherit_stats(line)
+function StopLevelling:setSkillLimitsInheritStats(line)
     if tostring(line) == "true" then
         StopLevelling.skills_limits_inherit_stats = true;
     elseif tostring(line) == "false" then
@@ -134,23 +135,23 @@ function StopLevelling:set_skills_limits_inherit_stats(line)
     end
 end
 
-function StopLevelling:set_skills_strength(line)
-    StopLevelling:set_stat_deps("strength", line)
+function StopLevelling:setSkillsStrength(line)
+    StopLevelling:setStatDeps("strength", line)
 end
 
-function StopLevelling:set_skills_agility(line)
-    StopLevelling:set_stat_deps("agility", line)
+function StopLevelling:setSkillsAgility(line)
+    StopLevelling:setStatDeps("agility", line)
 end
 
-function StopLevelling:set_skills_vitality(line)
-    StopLevelling:set_stat_deps("vitality", line)
+function StopLevelling:setSkillsVitality(line)
+    StopLevelling:setStatDeps("vitality", line)
 end
 
-function StopLevelling:set_skills_speech(line)
-    StopLevelling:set_stat_deps("speech", line)
+function StopLevelling:setSkillsSpeech(line)
+    StopLevelling:setStatDeps("speech", line)
 end
 
-function StopLevelling:set_stat_deps(stat, line)
+function StopLevelling:setStatDeps(stat, line)
     local original = StopLevelling["skills_"..stat];
     if original ~= nil then
         StopLevelling["skills_"..stat] = {};
@@ -162,11 +163,11 @@ function StopLevelling:set_stat_deps(stat, line)
             end
         end
     end
-    StopLevelling:set_data_skill_dependencies();
+    StopLevelling:setDataSkillDependencies();
 end
 
 -- set data from config values
-function StopLevelling:set_data_skill_dependencies()
+function StopLevelling:setDataSkillDependencies()
     local all = {
         strength=StopLevelling.skills_strength,
         agility=StopLevelling.skills_agility,
@@ -184,83 +185,83 @@ function StopLevelling:set_data_skill_dependencies()
     end
 end
 
-function StopLevelling:set_limit_strength(line)
-     StopLevelling:set_limit_value("strength", line)
+function StopLevelling:setLimitStrength(line)
+     StopLevelling:setLimitValue("strength", line)
 end
 
-function StopLevelling:set_limit_agility(line)
-     StopLevelling:set_limit_value("agility", line)
+function StopLevelling:setLimitAgility(line)
+     StopLevelling:setLimitValue("agility", line)
 end
 
-function StopLevelling:set_limit_vitality(line)
-     StopLevelling:set_limit_value("vitality", line)
+function StopLevelling:setLimitVitality(line)
+     StopLevelling:setLimitValue("vitality", line)
 end
 
-function StopLevelling:set_limit_speech(line)
-     StopLevelling:set_limit_value("speech", line)
+function StopLevelling:setLimitSpeech(line)
+     StopLevelling:setLimitValue("speech", line)
 end
 
-function StopLevelling:set_limit_craftsmanship(line)
-    StopLevelling:set_limit_value("craftsmanship", line)
+function StopLevelling:setLimitCraftsmanship(line)
+    StopLevelling:setLimitValue("craftsmanship", line)
 end
 
-function StopLevelling:set_limit_heavy_weapons(line)
-    StopLevelling:set_limit_value("heavy_weapons", line)
+function StopLevelling:setLimitHeavyWeapons(line)
+    StopLevelling:setLimitValue("heavy_weapons", line)
 end
 
-function StopLevelling:set_limit_survival(line)
-    StopLevelling:set_limit_value("survival", line)
+function StopLevelling:setLimitSurvival(line)
+    StopLevelling:setLimitValue("survival", line)
 end
 
-function StopLevelling:set_limit_weapon_large(line)
-    StopLevelling:set_limit_value("weapon_large", line)
+function StopLevelling:setLimitWeaponLarge(line)
+    StopLevelling:setLimitValue("weapon_large", line)
 end
 
-function StopLevelling:set_limit_fencing(line)
-    StopLevelling:set_limit_value("fencing", line)
+function StopLevelling:setLimitFencing(line)
+    StopLevelling:setLimitValue("fencing", line)
 end
 
-function StopLevelling:set_limit_marksmanship(line)
-    StopLevelling:set_limit_value("marksmanship", line)
+function StopLevelling:setLimitMarksmanship(line)
+    StopLevelling:setLimitValue("marksmanship", line)
 end
 
-function StopLevelling:set_limit_stealth(line)
-    StopLevelling:set_limit_value("stealth", line)
+function StopLevelling:setLimitStealth(line)
+    StopLevelling:setLimitValue("stealth", line)
 end
 
-function StopLevelling:set_limit_thievery(line)
-    StopLevelling:set_limit_value("thievery", line)
+function StopLevelling:setLimitThievery(line)
+    StopLevelling:setLimitValue("thievery", line)
 end
 
-function StopLevelling:set_limit_weapon_sword(line)
-    StopLevelling:set_limit_value("weapon_sword", line)
+function StopLevelling:setLimitWeaponSword(line)
+    StopLevelling:setLimitValue("weapon_sword", line)
 end
 
-function StopLevelling:set_limit_alchemy(line)
-    StopLevelling:set_limit_value("alchemy", line)
+function StopLevelling:setLimitAlchemy(line)
+    StopLevelling:setLimitValue("alchemy", line)
 end
 
-function StopLevelling:set_limit_houndmaster(line)
-    StopLevelling:set_limit_value("houndmaster", line)
+function StopLevelling:setLimitHoundmaster(line)
+    StopLevelling:setLimitValue("houndmaster", line)
 end
 
-function StopLevelling:set_limit_scholarship(line)
-    StopLevelling:set_limit_value("scholarship", line)
+function StopLevelling:setLimitScholarship(line)
+    StopLevelling:setLimitValue("scholarship", line)
 end
 
-function StopLevelling:set_limit_drinking(line)
-    StopLevelling:set_limit_value("drinking", line)
+function StopLevelling:setLimitDrinking(line)
+    StopLevelling:setLimitValue("drinking", line)
 end
 
-function StopLevelling:set_limit_horse_riding(line)
-    StopLevelling:set_limit_value("horse_riding", line)
+function StopLevelling:setLimitHorseRiding(line)
+    StopLevelling:setLimitValue("horse_riding", line)
 end
 
-function StopLevelling:set_limit_weapon_unarmed(line)
-    StopLevelling:set_limit_value("weapon_unarmed", line)
+function StopLevelling:setLimitWeaponUnarmed(line)
+    StopLevelling:setLimitValue("weapon_unarmed", line)
 end
 
-function StopLevelling:set_limit_value(statOrSkillKey, line)
+function StopLevelling:setLimitValue(statOrSkillKey, line)
     if StopLevelling["limit_"..statOrSkillKey] ~= nil then
         StopLevelling["limit_"..statOrSkillKey] = tonumber(line);
         StopLevelling.data[statOrSkillKey]["limit"] = tonumber(line);
@@ -278,10 +279,12 @@ function StopLevelling:set_limit_value(statOrSkillKey, line)
     end
 end
 
+
+
 function StopLevelling:limits()
     System.LogAlways("$3[DEBUG][StopLevelling] Stat limits:");
     for k, v in pairs(StopLevelling.data) do
-        System.LogAlways(string.format("$3[DEBUG][StopLevelling] \t %s %d", tostring(k), tonumber(v)));
+        System.LogAlways(string.format("$3[DEBUG][StopLevelling] \t %s %d", tostring(k), tonumber(v.limit)));
     end
 end
 
@@ -315,37 +318,44 @@ function StopLevelling:trimxp()
         
         if currentLevel ~= nil then
             if tonumber(currentLevel) >= limit then
-                if not player.soul:HasPerk(v.perk_id, false) then
-                    player.soul:AddPerk(v.perk_id)
+                local alreadyHasPerk = player.soul:HasPerk(v.perk_id, false);
+                if alreadyHasPerk ~= nil then
+                    if not alreadyHasPerk and not v.perk_added then
+                        System.LogAlways(string.format("$3[DEBUG][StopLevelling] adding XP blocking perk for attribute %s", tostring(k)));
+                        player.soul:AddPerk(v.perk_id)
+                        v.perk_added = true;
+                    end
                 end
             end
         end
-        -- only > 20% progress, above limit level, gets XP trimmed
-        if currentProgress ~= nil and currentLevel ~= nil then
-            if tonumber(currentProgress) >= 0.2 and tonumber(currentLevel) >= limit then
-                -- ideally we would call player.soul:GetNextLevelStatXP or player.soul:GetNextLevelSkillXP
-                -- to get the exact amount and remove all XP, but those methods don't seem to return anything
-                -- at the moment
-                if v.is_stat then
-                    player.soul:AddStatXP(tostring(k), -50);
-                else
-                    player.soul:AddSkillXP(tostring(k), -50);
+        if not v.perk_blocks_fully then
+            -- only > 20% progress, above limit level, gets XP trimmed
+            if currentProgress ~= nil and currentLevel ~= nil then
+                if tonumber(currentProgress) >= 0.2 and tonumber(currentLevel) >= limit then
+                    -- ideally we would call player.soul:GetNextLevelStatXP or player.soul:GetNextLevelSkillXP
+                    -- to get the exact amount and remove all XP, but those methods don't seem to return anything
+                    -- at the moment
+                    System.LogAlways(string.format("$3[DEBUG][StopLevelling] trimming XP for %s", tostring(k)));
+                    if v.is_stat then
+                        player.soul:AddStatXP(tostring(k), -50);
+                    else
+                        player.soul:AddSkillXP(tostring(k), -50);
+                    end
                 end
-                System.LogAlways(string.format("$3[DEBUG][StopLevelling] \t %s %s", tostring(v.governing_stat), tostring(k)));
             end
         end
     end
         
 end
 
-function StopLevelling:add_all_perks()
+function StopLevelling:addAllPerks()
     for k, v in pairs(StopLevelling.data) do
         player.soul:AddPerk(tostring(v.perk_id))
         System.LogAlways(string.format("$3[DEBUG][StopLevelling] Added XP blocking perk for %s (key=%s)", tostring(v.name), tostring(k)));
     end
 end
 
-function StopLevelling:remove_all_perks()
+function StopLevelling:removeAllPerks()
     for k, v in pairs(StopLevelling.data) do
         player.soul:RemovePerk(tostring(v.perk_id))
         System.LogAlways(string.format("$3[DEBUG][StopLevelling] Removed XP blocking perk for %s (key=%s)", tostring(v.name), tostring(k)));
@@ -359,57 +369,25 @@ function StopLevelling:initTimers()
         StopLevelling.xp_trim_timer_id = nil
     end
     StopLevelling.xp_trim_timer_id = Script.SetTimer(StopLevelling.xp_trim_timer_period, function(nTimerId)
-        StopLevelling:xp_trim_timer_callback(nTimerId)
+        StopLevelling:xpTrimTimerCallback(nTimerId)
     end)
 end
 
-function StopLevelling:xp_trim_timer_callback(nTimerId)
+function StopLevelling:xpTrimTimerCallback(nTimerId)
     -- Restart timer
     StopLevelling.xp_trim_timer_id = Script.SetTimer(StopLevelling.xp_trim_timer_period, function(nTimerId)
-        StopLevelling:xp_trim_timer_callback(nTimerId)
+        StopLevelling:xpTrimTimerCallback(nTimerId)
     end)
-
 	StopLevelling:trimxp();
-
 end
 
-
-function StopLevelling:loadCfg(actionName, eventName, argTable)
+function StopLevelling:initOnLevelLoad(actionName, eventName, argTable)
+    System.LogAlways(tostring(actionName)..tostring(eventName)..tostring(argTable))
     System.LogAlways("$5[INFO][StopLevelling] Load config");
     System.ExecuteCommand("exec Mods/biter_please_stop_levelling/mod.cfg")
+    StopLevelling:initTimers()
 end
-
-UIAction.RegisterEventSystemListener(StopLevelling, "System", "OnLoadingComplete", "loadCfg")
-
--- ============================================================================
--- uiActionListener
--- ============================================================================
-function StopLevelling:uiActionListener(actionName, eventName, argTable)
-    System.LogAlways("$5[INFO][StopLevelling] StopLevelling:uiActionListener called")
-end
-UIAction.RegisterActionListener(StopLevelling, "", "", "uiActionListener");
-
--- ============================================================================
--- uiElementListener
--- ============================================================================
-function StopLevelling:uiElementListener(elementName, instanceId, eventName, argTable)
-    System.LogAlways("$5[INFO][StopLevelling] StopLevelling:uiElementListener called")
-end
-UIAction.RegisterElementListener(StopLevelling, "", "", "", "uiElementListener");
-
--- ============================================================================
--- uiEventSystemListener
--- ============================================================================
-function StopLevelling:uiEventSystemListener(actionName, eventName, argTable)
-    System.LogAlways("$5[INFO][StopLevelling] StopLevelling:uiEventSystemListener called")
-end
-UIAction.RegisterEventSystemListener(StopLevelling, "", "", "uiEventSystemListener");
-
--- Credits to: https://next.nexusmods.com/profile/VadimCool?gameId=2298
-function StopLevelling:GameLoaded(elementName, instanceId, eventName, argTable)
-	StopLevelling:initTimers();
-end
+UIAction.RegisterEventSystemListener(StopLevelling, "", "", "initOnLevelLoad")
 
 StopLevelling:init();
--- enable for tests to work
 return StopLevelling;

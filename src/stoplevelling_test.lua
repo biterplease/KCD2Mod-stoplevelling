@@ -213,57 +213,57 @@ end
 
 function Runner:Test()
     for k, testfn in pairs(Runner) do
-        if string.match(tostring(k), "test_") then
+        if string.match(tostring(k), "test") then
             print(k..":")
             testfn(Runner)
         end
     end
 end
 
-function Runner:test_set_limit_value()
+function Runner:testSetLimitValue()
     local want = 1;
-    StopLevelling:set_limit_value("strength", tostring(want));
+    StopLevelling:setLimitValue("strength", tostring(want));
     local got = StopLevelling.limit_strength;
     if Runner:assertEqual(want,got) then print("\tOK") else print("\tFAIL") end
 end
-function Runner:test_set_limits()
+function Runner:testSetLimits()
     local currentValue = StopLevelling.skills_limits_inherit_stats;
     StopLevelling.skills_limits_inherit_stats = false;
     local values = {
-        "strength",
-        "agility",
-        "vitality",
-        "speech",
-        "craftsmanship",
-        "heavy_weapons",
-        "survival",
-        "weapon_large",
-        "fencing",
-        "marksmanship",
-        "stealth",
-        "thievery",
-        "weapon_sword",
-        "alchemy",
-        "houndmaster",
-        "scholarship",
-        "drinking",
-        "horse_riding",
-        "weapon_unarmed",
+        {f="Strength", v="strength"},
+        {f="Agility", v="agility"},
+        {f="Vitality", v="vitality"},
+        {f="Speech", v="speech"},
+        {f="Craftsmanship", v="craftsmanship"},
+        {f="HeavyWeapons", v="heavy_weapons"},
+        {f="Survival", v="survival"},
+        {f="WeaponLarge", v="weapon_large"},
+        {f="Fencing", v="fencing"},
+        {f="Marksmanship", v="marksmanship"},
+        {f="Stealth", v="stealth"},
+        {f="Thievery", v="thievery"},
+        {f="WeaponSword", v="weapon_sword"},
+        {f="Alchemy", v="alchemy"},
+        {f="Houndmaster", v="houndmaster"},
+        {f="Scholarship", v="scholarship"},
+        {f="Drinking", v="drinking"},
+        {f="HorseRiding", v="horse_riding"},
+        {f="WeaponUnarmed", v="weapon_unarmed"},
     }
     for _, attr in ipairs(values) do
         local want = 1;
-        StopLevelling["set_limit_"..attr](StopLevelling, tostring(want))
-        local got = StopLevelling["limit_"..attr];
+        StopLevelling["setLimit"..(attr.f)](StopLevelling, tostring(want))
+        local got = StopLevelling["limit_"..(attr.v)];
         if Runner:assertEqual(want,got) then
-            print("\ttest_limit_"..attr..": OK")
+            print("\ttestLimit"..attr.f..": OK")
         end
     end
     StopLevelling.skills_limits_inherit_stats = currentValue;
 end
 
-function Runner:test_set_stat_deps()
+function Runner:testSetStatDeps()
     local currentSpeechDeps = StopLevelling.skills_speech;
-    StopLevelling:set_stat_deps("speech", "craftsmanship,survival,thievery");
+    StopLevelling:setStatDeps("speech", "craftsmanship,survival,thievery");
     local currentSpeechLevel = StopLevelling.limit_speech
     local currentCraftsmanshipLevel = StopLevelling.limit_craftsmanship
     local currentSurvivalLevel = StopLevelling.limit_survival
@@ -273,20 +273,20 @@ function Runner:test_set_stat_deps()
     if Runner:assertHasValue(got, "craftsmanship") then print("\t craftsmanship OK") end
     if Runner:assertHasValue(got, "survival") then print("\t survival OK") end
     if Runner:assertHasValue(got, "thievery") then print("\t thievery OK") end
-    StopLevelling:set_stat_deps("speech", table.concat(currentSpeechDeps, ","));
-    StopLevelling:set_limit_speech(tostring(currentSpeechLevel))
-    StopLevelling:set_limit_craftsmanship(tostring(currentCraftsmanshipLevel))
-    StopLevelling:set_limit_survival(tostring(currentSurvivalLevel))
-    StopLevelling:set_limit_thievery(tostring(currentThieveryLevel))
+    StopLevelling:setStatDeps("speech", table.concat(currentSpeechDeps, ","));
+    StopLevelling:setLimitSpeech(tostring(currentSpeechLevel))
+    StopLevelling:setLimitCraftsmanship(tostring(currentCraftsmanshipLevel))
+    StopLevelling:setLimitSurvival(tostring(currentSurvivalLevel))
+    StopLevelling:setLimitThievery(tostring(currentThieveryLevel))
 end
 
-function Runner:test_set_limits_sets_stats_when_inherit_true()
+function Runner:testSetLimitsSetsStatsWhenInheritTrue()
     local currentValue = StopLevelling.skills_limits_inherit_stats;
-    StopLevelling:set_skills_limits_inherit_stats("true");
+    StopLevelling:setSkillLimitsInheritStats("true");
 
     
     local want = 1;
-    StopLevelling:set_limit_value("vitality", tostring(want))
+    StopLevelling:setLimitValue("vitality", tostring(want))
 
     local a = Runner:assertEqual(want, StopLevelling.limit_vitality, "vitality")
     local b = Runner:assertEqual(want, StopLevelling.limit_drinking, "drinking")
@@ -297,16 +297,16 @@ function Runner:test_set_limits_sets_stats_when_inherit_true()
         print("\tOK")
     end
 
-    StopLevelling:set_skills_limits_inherit_stats(tostring(currentValue));
+    StopLevelling:setSkillLimitsInheritStats(tostring(currentValue));
 end
 
-function Runner:test_logs_on_init()
+function Runner:testLogsOnInit()
     local want = "STOP LEVELLING";
     if Runner:assertLogged(want) then print("\tOK") end
 end
 
 
-function Runner:test_add_all_perks()
+function Runner:testAddAllPerks()
     player:clear()
     local perks = {
         '59fb8183-8474-4f60-aed0-eb6afe572e53',
@@ -332,11 +332,11 @@ function Runner:test_add_all_perks()
     for _, perkid in ipairs(perks) do
         player:expect("AddPerk", perkid)
     end
-    StopLevelling:add_all_perks();
+    StopLevelling:addAllPerks();
     if player:assertExpectations() then print("\tOK") end
 end
 
-function Runner:test_remove_all_perks()
+function Runner:testRemoveAllPerks()
     player:clear()
     local perks = {
         '59fb8183-8474-4f60-aed0-eb6afe572e53',
@@ -362,11 +362,11 @@ function Runner:test_remove_all_perks()
     for _, perkid in ipairs(perks) do
         player:expect("RemovePerk", perkid)
     end
-    StopLevelling:remove_all_perks();
+    StopLevelling:removeAllPerks();
     if player:assertExpectations() then print("\tOK") end
 end
 
-function Runner:test_trimxp_strength_over_limit()
+function Runner:testTrimxpStatOverLimit()
     player:clear()
     -- setup
     for k, v in pairs(StopLevelling.data) do
@@ -395,9 +395,9 @@ function Runner:test_trimxp_strength_over_limit()
     if player:assertExpectations() then print("\tOK") end
 end
 
-function Runner:test_trimxp_alchemy_over_limit()
+function Runner:testTrimxpSkillOverLimit()
     local inheritValue = StopLevelling.skills_limits_inherit_stats;
-    StopLevelling:set_skills_limits_inherit_stats("false");
+    StopLevelling:setSkillLimitsInheritStats("false");
     player:clear()
     -- setup
     for k, v in pairs(StopLevelling.data) do
@@ -425,7 +425,7 @@ function Runner:test_trimxp_alchemy_over_limit()
 
     if player:assertExpectations() then print("\tOK") end
 
-    StopLevelling:set_skills_limits_inherit_stats(tostring(inheritValue));
+    StopLevelling:setSkillLimitsInheritStats(tostring(inheritValue));
 end
 
 Runner:Test()
