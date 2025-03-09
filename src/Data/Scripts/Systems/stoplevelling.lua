@@ -389,7 +389,6 @@ function StopLevelling:xpTrimTimerCallback(nTimerId)
 end
 
 function StopLevelling:GameLoaded(elementName, instanceId, eventName, argTable)
-    System.LogAlways(tostring(elementName)..tostring(eventName)..tostring(argTable))
     System.LogAlways("$5[INFO][StopLevelling] Load config");
     System.ExecuteCommand("exec Mods/biter_please_stop_levelling/mod.cfg")
     StopLevelling:init();
