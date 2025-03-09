@@ -55,7 +55,7 @@ xma     Marksmanship
 xsc     Scholarship
 ```
 
-These can be blocked completely. Those that are not on this list, are have their XP reduced every 30 seconds by a script, only if:
+These can be blocked completely. Those that are not on this list, are have their XP reduced periodcally by script, only if:
 - Their current XP progress is >= 20%
 - The current skill or stat is >= the limit set in config.
 
