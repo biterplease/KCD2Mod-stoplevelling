@@ -116,7 +116,8 @@ function StopLevelling:init()
     System.AddCCommand("stoplevelling_skill_deps", "StopLevelling:skillDeps()", "show skill-stat relation")
     System.AddCCommand("stoplevelling_add_all_perks", "StopLevelling:addAllPerks()", "Add all xp-blocking perks to the player.")
     System.AddCCommand("stoplevelling_remove_all_perks", "StopLevelling:removeAllPerks()", "Add all xp-blocking perks to the player.")
-    System.AddCCommand("stoplevelling_trimnow", "StopLevelling:trimxp()", "")
+    System.AddCCommand("stoplevelling_trim_xp", "StopLevelling:trimxp()", "")
+    System.AddCCommand("stoplevelling_kill_timers", "StopLevelling:killTimers()", "")
 end
 
 
@@ -321,7 +322,7 @@ function StopLevelling:trimxp()
                 local alreadyHasPerk = player.soul:HasPerk(v.perk_id, false);
                 if alreadyHasPerk ~= nil then
                     if not alreadyHasPerk and not v.perk_added then
-                        System.LogAlways(string.format("$3[DEBUG][StopLevelling] adding XP blocking perk for attribute %s", tostring(k)));
+                        System.LogAlways(string.format("$5[INFO][StopLevelling] adding XP blocking perk for attribute %s", tostring(k)));
                         player.soul:AddPerk(v.perk_id)
                         v.perk_added = true;
                     end
@@ -335,7 +336,7 @@ function StopLevelling:trimxp()
                     -- ideally we would call player.soul:GetNextLevelStatXP or player.soul:GetNextLevelSkillXP
                     -- to get the exact amount and remove all XP, but those methods don't seem to return anything
                     -- at the moment
-                    System.LogAlways(string.format("$3[DEBUG][StopLevelling] trimming XP for %s", tostring(k)));
+                    System.LogAlways(string.format("$5[INFO][StopLevelling] trimming XP for %s", tostring(k)));
                     if v.is_stat then
                         player.soul:AddStatXP(tostring(k), -50);
                     else
@@ -373,6 +374,14 @@ function StopLevelling:initTimers()
     end)
 end
 
+function StopLevelling:killTimers()
+	System.LogAlways("$5[INFO][StopLevelling] Killing timers");
+    if StopLevelling.xp_trim_timer_id ~= nil then
+        Script.KillTimer(StopLevelling.xp_trim_timer_id)
+        StopLevelling.xp_trim_timer_id = nil
+    end
+end
+
 function StopLevelling:xpTrimTimerCallback(nTimerId)
     -- Restart timer
     StopLevelling.xp_trim_timer_id = Script.SetTimer(StopLevelling.xp_trim_timer_period, function(nTimerId)
@@ -381,13 +390,13 @@ function StopLevelling:xpTrimTimerCallback(nTimerId)
 	StopLevelling:trimxp();
 end
 
-function StopLevelling:initOnLevelLoad(actionName, eventName, argTable)
-    System.LogAlways(tostring(actionName)..tostring(eventName)..tostring(argTable))
+function StopLevelling:GameLoaded(elementName, instanceId, eventName, argTable)
+    System.LogAlways(tostring(elementName)..tostring(eventName)..tostring(argTable))
     System.LogAlways("$5[INFO][StopLevelling] Load config");
     System.ExecuteCommand("exec Mods/biter_please_stop_levelling/mod.cfg")
+    StopLevelling:init();
     StopLevelling:initTimers()
 end
-UIAction.RegisterEventSystemListener(StopLevelling, "", "", "initOnLevelLoad")
+UIAction.RegisterEventSystemListener(StopLevelling, "", "OnGameplayStarted", "GameLoaded")
 
-StopLevelling:init();
 return StopLevelling;

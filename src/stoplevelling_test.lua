@@ -22,7 +22,7 @@ end
 UIAction["RegisterEventSystemListener"] = function()
 end
 
-local StopLevelling = require "src.Data.Scripts.Startup.stoplevelling";
+local StopLevelling = require "src.Data.Scripts.Systems.stoplevelling";
 
 -- mock for player.soul methods
 player = {
@@ -366,11 +366,18 @@ function Runner:testRemoveAllPerks()
     if player:assertExpectations() then print("\tOK") end
 end
 
-function Runner:testTrimxpStatOverLimit()
+-- test against stat that perk blocks fully (strength)
+function Runner:testTrimxpStatWithXPModifierPerkOverLimit()
     player:clear()
     -- setup
     for k, v in pairs(StopLevelling.data) do
-        if k ~= "strength" then
+        if k == "strength" then
+            player:expect("GetStatProgress", tostring(k), nil, 0.50);
+            player:expect("GetStatLevel", tostring(k), nil, 20);
+            player:expect("HasPerk", v.perk_id, nil, false);
+            player:expect("AddPerk", v.perk_id);
+            StopLevelling.data[k]["limit"] = 5;
+        else 
             StopLevelling.data[k]["limit"] = 25;
             if v.is_stat then
                 player:expect("GetStatProgress", tostring(k), nil, 0.15);
@@ -379,23 +386,74 @@ function Runner:testTrimxpStatOverLimit()
                 player:expect("GetSkillProgress", tostring(k), nil, 0.15);
                 player:expect("GetSkillLevel", tostring(k), nil, 20);
             end
-        else 
-            player:expect("GetStatProgress", tostring(k), nil, 0.50);
-            player:expect("GetStatLevel", tostring(k), nil, 20);
-            player:expect("HasPerk", v.perk_id);
-            player:expect("AddPerk", v.perk_id);
-            StopLevelling.data[k]["limit"] = 5;
         end
     end
-
-    player:expect("AddStatXP", "strength", -50);
 
     StopLevelling:trimxp();
 
     if player:assertExpectations() then print("\tOK") end
 end
 
-function Runner:testTrimxpSkillOverLimit()
+-- test against stat that perk does not block (speech)
+function Runner:testTrimxpStatWithoutXPModifierPerkOverLimit()
+    player:clear()
+    -- setup
+    for k, v in pairs(StopLevelling.data) do
+        if k == "speech" then
+            player:expect("GetStatProgress", tostring(k), nil, 0.50);
+            player:expect("GetStatLevel", tostring(k), nil, 20);
+            player:expect("HasPerk", v.perk_id, nil, false);
+            player:expect("AddPerk", v.perk_id);
+            StopLevelling.data[k]["limit"] = 5;
+        else 
+            StopLevelling.data[k]["limit"] = 25;
+            if v.is_stat then
+                player:expect("GetStatProgress", tostring(k), nil, 0.15);
+                player:expect("GetStatLevel", tostring(k), nil, 20);
+            else
+                player:expect("GetSkillProgress", tostring(k), nil, 0.15);
+                player:expect("GetSkillLevel", tostring(k), nil, 20);
+            end
+        end
+    end
+
+    player:expect("AddStatXP", "speech", -50);
+    StopLevelling:trimxp();
+    if player:assertExpectations() then print("\tOK") end
+end
+
+function Runner:testTrimxpSkillWithXPModifierPerkOverLimit()
+    local inheritValue = StopLevelling.skills_limits_inherit_stats;
+    StopLevelling:setSkillLimitsInheritStats("false");
+    player:clear()
+    -- setup
+    for k, v in pairs(StopLevelling.data) do
+        if k == "craftsmanship" then
+            player:expect("GetSkillProgress", tostring(k), nil, 0.60);
+            player:expect("GetSkillLevel", tostring(k), nil, 6);
+            player:expect("HasPerk", v.perk_id, nil, false);
+            player:expect("AddPerk", v.perk_id);
+            StopLevelling.data[k]["limit"] = 5;
+        else 
+            StopLevelling.data[k]["limit"] = 25;
+            if v.is_stat then
+                player:expect("GetStatProgress", tostring(k), nil, 0.12);
+                player:expect("GetStatLevel", tostring(k), nil, 21);
+            else
+                player:expect("GetSkillProgress", tostring(k), nil, 0.12);
+                player:expect("GetSkillLevel", tostring(k), nil, 21);
+            end
+        end
+    end
+
+    StopLevelling:trimxp();
+
+    if player:assertExpectations() then print("\tOK") end
+
+    StopLevelling:setSkillLimitsInheritStats(tostring(inheritValue));
+end
+
+function Runner:testTrimxpSkillWithoutXPModifierPerkOverLimit()
     local inheritValue = StopLevelling.skills_limits_inherit_stats;
     StopLevelling:setSkillLimitsInheritStats("false");
     player:clear()
@@ -404,7 +462,7 @@ function Runner:testTrimxpSkillOverLimit()
         if k == "alchemy" then
             player:expect("GetSkillProgress", tostring(k), nil, 0.60);
             player:expect("GetSkillLevel", tostring(k), nil, 6);
-            player:expect("HasPerk", v.perk_id);
+            player:expect("HasPerk", v.perk_id, nil, false);
             player:expect("AddPerk", v.perk_id);
             StopLevelling.data[k]["limit"] = 5;
         else 

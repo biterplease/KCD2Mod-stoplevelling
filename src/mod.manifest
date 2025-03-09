@@ -1,9 +1,9 @@
 <kcd_mod>
   <info>
-    <name>StopLevelling</name>
-    <modid>biter_please_stop_levelling</modid>
+    <name>Stop levelling</name>
+    <modid>biterplease_stop_levelling</modid>
     <description>Control the max level of stats and skills.</description>
-    <author>biter_please</author>
+    <author>biterplease</author>
     <version>0.1.0</version>
     <created_on>2025-03-06</created_on>
     <dependencies></dependencies>
