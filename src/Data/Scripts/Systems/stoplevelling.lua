@@ -205,63 +205,93 @@ function StopLevelling:setLimitSpeech(line)
 end
 
 function StopLevelling:setLimitCraftsmanship(line)
-    StopLevelling:setLimitValue("craftsmanship", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("craftsmanship", line)
+    end
 end
 
 function StopLevelling:setLimitHeavyWeapons(line)
-    StopLevelling:setLimitValue("heavy_weapons", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("heavy_weapons", line)
+    end
 end
 
 function StopLevelling:setLimitSurvival(line)
-    StopLevelling:setLimitValue("survival", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("survival", line)
+    end
 end
-
+    
 function StopLevelling:setLimitWeaponLarge(line)
-    StopLevelling:setLimitValue("weapon_large", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("weapon_large", line)
+    end
 end
 
 function StopLevelling:setLimitFencing(line)
-    StopLevelling:setLimitValue("fencing", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("fencing", line)
+    end
 end
 
 function StopLevelling:setLimitMarksmanship(line)
-    StopLevelling:setLimitValue("marksmanship", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("marksmanship", line)
+    end
 end
 
 function StopLevelling:setLimitStealth(line)
-    StopLevelling:setLimitValue("stealth", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("stealth", line)
+    end
 end
 
 function StopLevelling:setLimitThievery(line)
-    StopLevelling:setLimitValue("thievery", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("thievery", line)
+    end
 end
 
 function StopLevelling:setLimitWeaponSword(line)
-    StopLevelling:setLimitValue("weapon_sword", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("weapon_sword", line)
+    end
 end
 
 function StopLevelling:setLimitAlchemy(line)
-    StopLevelling:setLimitValue("alchemy", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("alchemy", line)
+    end
 end
 
 function StopLevelling:setLimitHoundmaster(line)
-    StopLevelling:setLimitValue("houndmaster", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("houndmaster", line)
+    end
 end
 
 function StopLevelling:setLimitScholarship(line)
-    StopLevelling:setLimitValue("scholarship", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("scholarship", line)
+    end
 end
 
 function StopLevelling:setLimitDrinking(line)
-    StopLevelling:setLimitValue("drinking", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("drinking", line)
+    end
 end
 
 function StopLevelling:setLimitHorseRiding(line)
-    StopLevelling:setLimitValue("horse_riding", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("horse_riding", line)
+    end
 end
 
 function StopLevelling:setLimitWeaponUnarmed(line)
-    StopLevelling:setLimitValue("weapon_unarmed", line)
+    if not StopLevelling.skills_limits_inherit_stats then
+        StopLevelling:setLimitValue("weapon_unarmed", line)
+    end
 end
 
 function StopLevelling:setLimitValue(statOrSkillKey, line)
@@ -381,6 +411,47 @@ function StopLevelling:removePerk(line)
         System.LogAlways(string.format("$3[DEBUG][StopLevelling] Removed XP blocking perk for %s (key=%s)", tostring(entry.name), tostring(tostring(line))));
     end
 end
+
+
+
+
+function StopLevelling:funcsign(f)
+    assert(type(f) == 'function', "bad argument #1 to 'funcsign' (function expected)")
+    local p = {}
+    pcall(
+       function()
+          local oldhook
+          local delay = 2
+          local function hook(event, line)
+             delay = delay - 1
+             if delay == 0 then
+                for i = 1, math.huge do
+                   local k, v = debug.getlocal(2, i)
+                   if type(v) == "table" then
+                      table.insert(p, "...")
+                      break
+                   elseif (k or '('):sub(1, 1) == '(' then
+                      break
+                   else
+                      table.insert(p, k)
+                   end
+                end
+                if debug.getlocal(2, -1) then
+                   table.insert(p, "...")
+                end
+                debug.sethook(oldhook)
+                System.LogAlways(tostring(error('aborting the call')))
+             end
+          end
+          oldhook = debug.sethook(hook, "c")
+          local arg = {}
+          for j = 1, 64 do arg[#arg + 1] = true end
+          f((table.unpack or unpack)(arg))
+       end)
+       System.LogAlways("function("..table.concat(p, ",")..")")
+    return "function("..table.concat(p, ",")..")"
+ end
+ 
 
 function StopLevelling:initTimers()
 	System.LogAlways("$5[INFO][StopLevelling] Init timers");
