@@ -333,17 +333,17 @@ function StopLevelling:trimxp()
             end
         end
         if not v.perk_blocks_fully then
-            -- only > 20% progress, above limit level, gets XP trimmed
+            -- only > 50% progress, above limit level, gets XP trimmed
             if currentProgress ~= nil and currentLevel ~= nil then
-                if tonumber(currentProgress) >= 0.2 and tonumber(currentLevel) >= limit then
+                if tonumber(currentProgress) >= 0.5 and tonumber(currentLevel) >= limit then
                     -- ideally we would call player.soul:GetNextLevelStatXP or player.soul:GetNextLevelSkillXP
                     -- to get the exact amount and remove all XP, but those methods don't seem to return anything
                     -- at the moment
                     System.LogAlways(string.format("$5[INFO][StopLevelling] trimming XP for %s %s (%s)", noun, tostring(k), tostring(v.name)));
                     if v.is_stat then
-                        player.soul:AddStatXP(tostring(k), -50);
+                        player.soul:AddStatXP(tostring(k), -40);
                     else
-                        player.soul:AddSkillXP(tostring(k), -50);
+                        player.soul:AddSkillXP(tostring(k), -40);
                     end
                 end
             end
