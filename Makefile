@@ -6,12 +6,16 @@ export:
 	mkdir -p "${EXPORTDIR}/Data" ./zips/
 	@cp ./src/mod.cfg "${EXPORTDIR}/"
 	@cp ./src/mod.manifest "${EXPORTDIR}/"
+	@7z a -tzip "${EXPORTDIR}/Localization/English_xml.pak" \
+		./src/Localization/text__stoplevelling.xml
 	@7z a -tzip "${EXPORTDIR}/Data/StopLevelling.pak" \
 		./src/Data/Scripts \
-		./src/Data/Libs -r -mtm=off -mtc=off -mta=off
+		./src/Data/Libs \
+		-r -mtm=off -mtc=off -mta=off
 
 	@zip ./zips/StopLevelling.zip \
 		./biterplease_stop_levelling/Data/StopLevelling.pak \
+		./biterplease_stop_levelling/Localization/English_xml.pak \
 		./biterplease_stop_levelling/mod.manifest \
 		./biterplease_stop_levelling/mod.cfg \
 
