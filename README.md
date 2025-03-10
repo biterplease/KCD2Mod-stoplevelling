@@ -170,6 +170,7 @@ drinking
 horse_riding
 weapon_unarmed
 ```
+
 ### Unit testing
 
 1. Clone repository
