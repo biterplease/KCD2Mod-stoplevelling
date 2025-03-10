@@ -76,8 +76,8 @@ STOPLEVELLING-SET-xp_trim_timer_period 30000
 ```
 STOPLEVELLING-SET-limit_strength 20
 STOPLEVELLING-SET-limit_agility 20
-STOPLEVELLING-SET-limit_vitality 15
-STOPLEVELLING-SET-limit_speech 15
+STOPLEVELLING-SET-limit_vitality 20
+STOPLEVELLING-SET-limit_speech 20
 ```
 Forces Skill max level to the Stat max level.
 ```
@@ -127,5 +127,67 @@ STOPLEVELLING-SET-limit_weapon_unarmed 20
 
 ## Testing
 
-1. Install `make`
-2. Run `make test`
+### In-game
+
+There's a number of commands added in-game that allow you to check out the mod at work.
+
+I suggest that if you are doing this, you start with `stoplevelling_kill_timers`, to prevent unwanted actions.
+
+```
+Function                                   | Example usage                      | Remarks
+-------------------------------------------|------------------------------------|--------------------------------------------------------------------
+stoplevelling_limits                       | stoplevelling_limits               |
+stoplevelling_skill_deps                   | stoplevelling_skill_deps           |
+stoplevelling_add_all_perks                | stoplevelling_add_all_perks        |
+stoplevelling_remove_all_perks             | stoplevelling_remove_all_perks     |  
+stoplevelling_add_perk <stat_or_skill>     | stoplevelling_add_perk alchemy     |
+stoplevelling_remove_perk <stat_or_skill>  | stoplevelling_remove_perk strength | Accepted arguments listed below.
+stoplevelling_trim_xp                      | stoplevelling_trim_xp              | Core of the mod, checks Stat and Skill levels and blocks if needed.
+stoplevelling_init_timers                  | stoplevelling_init_timers          | 
+stoplevelling_kill_timers                  | stoplevelling_kill_timers          |
+```
+
+Arguments to `stoplevelling_add_perk` and `stoplevelling_remove_perk`:
+
+```shell
+strength
+agility
+vitality
+speech
+craftsmanship
+heavy_weapons
+survival
+weapon_large   # polearms
+fencing        # warfare
+marksmanship
+stealth
+thievery
+weapon_sword
+alchemy
+houndmaster
+scholarship
+drinking
+horse_riding
+weapon_unarmed
+```
+### Unit testing
+
+1. Clone repository
+2. Install `make`
+3. Run `make test`
+
+## Building locally
+
+1. Clone repository
+2. Install `make`
+3. Run `make build`
+
+The zipped version of the mod should be in `./zips`
+
+## Contributing
+
+### Localization
+
+Open a PR adding your translations to `src/Data/Localization` under the filename `text_ui_soul__stoplevelling_<Language>.xml`
+
+Note that `<Language>` needs to match the language definitions found in the gamefiles under `C:\Program Files (x86)\Steam\steamapps\common\KingdomComeDeliverance2\Localization` by default, e.g. `text_ui_soul__stoplevelling_Spanish.xml`, `text_ui_soul__stoplevelling_German.xml`, etc
