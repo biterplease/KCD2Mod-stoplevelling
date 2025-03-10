@@ -391,7 +391,7 @@ end
 
 function StopLevelling:GameLoaded(elementName, instanceId, eventName, argTable)
     System.LogAlways("$5[INFO][StopLevelling] Load config");
-    System.ExecuteCommand("exec Mods/biter_please_stop_levelling/mod.cfg")
+    System.ExecuteCommand("exec Mods/biterplease_stop_levelling/mod.cfg")
     StopLevelling:init();
     StopLevelling:initTimers()
 end
