@@ -110,11 +110,15 @@ function StopLevelling:init()
     System.AddCCommand("STOPLEVELLING-SET-limit_horse_riding", "StopLevelling:setLimitHorseRiding(%line)", "Set limit for Skill horse_riding");
     System.AddCCommand("STOPLEVELLING-SET-limit_weapon_unarmed", "StopLevelling:setLimitWeaponUnarmed(%line)", "Set limit for Skill weapon_unarmed");
 
+    -- Debug commands
     System.AddCCommand("stoplevelling_limits", "StopLevelling:limits()", "show stat and skill limits")
     System.AddCCommand("stoplevelling_skill_deps", "StopLevelling:skillDeps()", "show skill-stat relation")
     System.AddCCommand("stoplevelling_add_all_perks", "StopLevelling:addAllPerks()", "Add all xp-blocking perks to the player.")
     System.AddCCommand("stoplevelling_remove_all_perks", "StopLevelling:removeAllPerks()", "Add all xp-blocking perks to the player.")
+    System.AddCCommand("stoplevelling_add_perk", "StopLevelling:addPerk(%line)", "Add all xp-blocking perks to the player.")
+    System.AddCCommand("stoplevelling_remove_perk", "StopLevelling:removePerks(%line)", "Add all xp-blocking perks to the player.")
     System.AddCCommand("stoplevelling_trim_xp", "StopLevelling:trimxp()", "")
+    System.AddCCommand("stoplevelling_init_timers", "StopLevelling:initTimers()", "")
     System.AddCCommand("stoplevelling_kill_timers", "StopLevelling:killTimers()", "")
 end
 
@@ -359,6 +363,22 @@ function StopLevelling:removeAllPerks()
     for k, v in pairs(StopLevelling.data) do
         player.soul:RemovePerk(tostring(v.perk_id))
         System.LogAlways(string.format("$3[DEBUG][StopLevelling] Removed XP blocking perk for %s (key=%s)", tostring(v.name), tostring(k)));
+    end
+end
+
+function StopLevelling:addPerk(line)
+    local entry = StopLevelling.data[tostring(line)];
+    if entry ~= nil then
+        player.soul:AddPerk(tostring(entry.perk_id))
+        System.LogAlways(string.format("$3[DEBUG][StopLevelling] Added XP blocking perk for %s (key=%s)", tostring(entry.name), tostring(tostring(line))));
+    end
+end
+
+function StopLevelling:removePerk(line)
+    local entry = StopLevelling.data[tostring(line)];
+    if entry ~= nil then
+        player.soul:AddPerk(tostring(entry.perk_id))
+        System.LogAlways(string.format("$3[DEBUG][StopLevelling] Removed XP blocking perk for %s (key=%s)", tostring(entry.name), tostring(tostring(line))));
     end
 end
 
