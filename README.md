@@ -56,7 +56,7 @@ xsc     Scholarship
 ```
 
 These can be blocked completely. Those that are not on this list, are have their XP reduced periodcally by script, only if:
-- Their current XP progress is >= 20%
+- Their current XP progress is >= 50%
 - The current skill or stat is >= the limit set in config.
 
 There are caveats around this approach, mainly that XP isn't really stopped, only controlled. A quest reward or skill book might shoot you past the desired limit, and there is no way to go back a level.
