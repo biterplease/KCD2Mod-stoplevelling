@@ -7,7 +7,8 @@ export:
 	@cp ./src/mod.cfg "${EXPORTDIR}/"
 	@cp ./src/mod.manifest "${EXPORTDIR}/"
 	@7z a -tzip "${EXPORTDIR}/Localization/English_xml.pak" \
-		./src/Localization/text__stoplevelling.xml
+		./src/Localization/text_ui_soul__stoplevelling.xml \
+		-r -mtm=off -mtc=off -mta=off
 	@7z a -tzip "${EXPORTDIR}/Data/StopLevelling.pak" \
 		./src/Data/Scripts \
 		./src/Data/Libs \
