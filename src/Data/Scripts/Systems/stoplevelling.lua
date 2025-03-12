@@ -352,9 +352,7 @@ function StopLevelling:trimxp()
         end
         
         if currentLevel ~= nil then
-            -- skip all execution if current statOrSkill level below limit
-            if currentLevel < limit then goto continue end
-            
+            -- only act if  current statOrSkill level greater than or equal to limit           
             if currentLevel >= limit then
                 local alreadyHasPerk = player.soul:HasPerk(v.perk_id, false);
                 if alreadyHasPerk ~= nil then
@@ -364,35 +362,34 @@ function StopLevelling:trimxp()
                         v.perk_added = true;
                     end
                 end
-            end
-        end
-        
-        -- if the stat or skill doesn't have a full blocking perk, we need to trim
-        if not v.perk_blocks_fully then
-            if v.is_stat then 
-                currentProgress = tonumber(player.soul:GetStatProgress(statOrSkill));
-                if currentLevel ~= nil and currentProgress ~= nil then
-                    xpToRemove = -1 * math.floor(player.soul:GetNextLevelStatXP(statOrSkill, currentLevel) * currentProgress) + 1;
-                end
-            else
-                currentProgress = tonumber(player.soul:GetSkillProgress(statOrSkill));
-                if currentLevel ~= nil and currentProgress ~= nil then
-                    xpToRemove = -1 * math.floor(player.soul:GetNextLevelSkillXP(statOrSkill, currentLevel) * currentProgress) + 1;
-                end
-            end
-            -- only > 10% progress, above limit level, gets XP trimmed
-            if currentProgress ~= nil and currentLevel ~= nil then
-                if currentProgress >= 0.1 and currentLevel >= limit then
-                    System.LogAlways(string.format("$5[INFO][StopLevelling] trimming %d XP for %s %s (%s)", xpToRemove, noun, statOrSkill, v.name));
-                    if v.is_stat then
-                        player.soul:AddStatXP(statOrSkill, xpToRemove);
+                
+                -- if the stat or skill doesn't have a full blocking perk, we need to trim
+                if not v.perk_blocks_fully then
+                    if v.is_stat then 
+                        currentProgress = tonumber(player.soul:GetStatProgress(statOrSkill));
+                        if currentLevel ~= nil and currentProgress ~= nil then
+                            xpToRemove = -1 * math.floor(player.soul:GetNextLevelStatXP(statOrSkill, currentLevel) * currentProgress) + 1;
+                        end
                     else
-                        player.soul:AddSkillXP(statOrSkill, xpToRemove);
+                        currentProgress = tonumber(player.soul:GetSkillProgress(statOrSkill));
+                        if currentLevel ~= nil and currentProgress ~= nil then
+                            xpToRemove = -1 * math.floor(player.soul:GetNextLevelSkillXP(statOrSkill, currentLevel) * currentProgress) + 1;
+                        end
+                    end
+                    -- only > 10% progress, above limit level, gets XP trimmed
+                    if currentProgress ~= nil and currentLevel ~= nil then
+                        if currentProgress >= 0.1 and currentLevel >= limit then
+                            System.LogAlways(string.format("$5[INFO][StopLevelling] trimming %d XP for %s %s (%s)", xpToRemove, noun, statOrSkill, v.name));
+                            if v.is_stat then
+                                player.soul:AddStatXP(statOrSkill, xpToRemove);
+                            else
+                                player.soul:AddSkillXP(statOrSkill, xpToRemove);
+                            end
+                        end
                     end
                 end
             end
         end
-        ::continue::
     end 
 end
 
