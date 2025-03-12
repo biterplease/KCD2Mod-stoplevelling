@@ -1,4 +1,7 @@
 **/pkg
 **/export
 **/zips
-biterplease_stop_levelling
+**/biterplease_stop_levelling
+/lua
+/lua_modules
+/.luarocks

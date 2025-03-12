@@ -1,4 +1,7 @@
-local inspect = require "inspect";
+local lu = require "luaunit";
+local mockagne = require "mockagne"
+
+-- fakes
 System = {
     logBuffer = {}
 }
@@ -25,211 +28,20 @@ end
 local StopLevelling = require "src.Data.Scripts.Systems.stoplevelling";
 
 -- mock for player.soul methods
-player = {
-    calls={
-        -- GetStatProgress = {},
-        -- GetStatLevel = {},
-        -- GetSkillProgress = {},
-        -- GetSkillLevel = {},
-        -- AddStatXP = {},
-        -- AddSkillXP = {},
-        -- AddPerk = {},
-        -- RemovePerk = {},
-    },
-    expectations={
-        -- GetStatProgress = {},
-        -- GetStatLevel = {},
-        -- GetSkillProgress = {},
-        -- GetSkillLevel = {},
-        -- AddStatXP = {},
-        -- AddSkillXP = {},
-        -- AddPerk = {},
-        -- RemovePerk = {},
-    }
-}
-player.soul  = {}
-function player:called(method, arg1,arg2)
+player = {}
 
-    local call = {arg1= arg1};
-    if arg2 ~= nil then
-        call["arg2"] = arg2;
-    end
-    if player.calls[method] == nil then
-        player.calls[method] = {}
-    end
-    table.insert(player.calls[method], call);
-end
-
-
-function player:expect(method, arg1, arg2, returnValue)
-    local call = {arg1 = arg1};
-    if arg2 ~= nil then
-        call.arg2 = arg2;
-    end
-    if returnValue ~= nil then
-        call.returnValue = returnValue;
-    end
-    if player.expectations[method] == nil then
-        player.expectations[method] = {}
-    end
-    table.insert(player.expectations[method], call);
-end
-
-function player:assertExpectations()
-    local ok = true;
-    for key, expectation in pairs(player.expectations) do
-        if expectation ~= nil then
-            local call = player.calls[key];
-
-            if call == nil then
-                Runner:raise(string.format("expected call to method %s, but there is none", key))
-                ok = false;
-            else
-                if expectation["arg1"] ~= call["arg1"] then
-                    Runner:raise(string.format("expected call to method %s with arg1 %s, got %s instead", key, tostring(expectation["arg1"]), tostring(call["arg1"])))
-                    ok = false
-                end
-                if expectation["arg2"] ~= nil then
-                    if expectation["arg2"] ~= call["arg2"] then
-                        Runner:raise(string.format("expected call to method %s with arg1 %s, got %s instead", key, tostring(expectation["arg2"]), tostring(call["arg2"])))
-                        ok = false
-                    end
-                end
-            end
-        end
-    end
-    return ok
-end
-
-function player:getExpectedReturnValue(method, arg1)
-    for key, expectationSet in pairs(player.expectations) do
-        for _, expectation in ipairs(expectationSet) do
-            if key == method then
-                if expectation["arg1"] ~= nil then
-                    if expectation["arg1"] == arg1 then
-                        return expectation["returnValue"]
-                    end    
-                end
-            end
-        end
-    end
-    return nil
-end
-function player:clear()
-    player.expectations = nil;
-    player.calls = nil;
-    player.expectations = {};
-    player.calls = {};
-end
-
-function player.soul:GetStatProgress(stat)
-    player:called("GetStatProgress", stat)
-    local r = player:getExpectedReturnValue("GetStatProgress", stat);
-    return r
-end
-
-function player.soul:GetStatLevel(stat)
-    player:called("GetStatLevel", stat)
-    local r = player:getExpectedReturnValue("GetStatLevel",stat)
-    return r
-end
-
-function player.soul:GetSkillProgress(skill)
-    player:called("GetSkillProgress", skill)
-    return player:getExpectedReturnValue("GetSkillProgress",skill)
-end
-
-function player.soul:GetSkillLevel(skill)
-    player:called("GetSkillLevel", skill)
-    return player:getExpectedReturnValue("GetSkillLevel",skill)
-end
-
-function player.soul:AddStatXP(stat, amt)
-    player:called("AddStatXP", stat, amt)
-end
-
-function player.soul:AddSkillXP(skill, amt)
-    player:called("AddSkillXP", skill, amt)
-end
-
-function player.soul:AddPerk(perkid)
-    player:called("AddPerk", perkid)
-end
-
-function player.soul:HasPerk(perkid, booly)
-    player:called("HasPerk", perkid, booly)
-    return player:getExpectedReturnValue("HasPerk", perkid)
-end
-
-function player.soul:RemovePerk(perkid)
-    player:called("RemovePerk", perkid)
-end
-
--- testrunner
-Runner = {}
-function Runner:raise(errMessage)
-    io.stderr:write("\tFAIL: Error: "..errMessage.."\n");
-end
-
-function Runner:assertEqual(a,b,errMessage)
-    if type(a) ~= type(b) then
-        Runner:raise(string.format("different types %s and %", type(a), type(b)))
-        return false
-    end
-    if not (a == b) then
-        if errMessage ~= nil then
-            Runner:raise(string.format("want %d got %d: %s", a, b, errMessage))
-            return false
-        end
-        Runner:raise(string.format("want %d got %d", a, b))
-        return false
-    end
-    return true
-end
-
-function Runner:assertHasValue(tab, val)
-    for _, value in ipairs(tab) do
-        if value == val then
-            return true
-        end
-    end
-    Runner:raise(string.format("want %s to exist in table [%s], but its missing", val, table.concat(tab,",")))
-    return false
-end
-
-
-function Runner:assertLogged(want)
-    local found = false;
-    for _, line in ipairs(System.logBuffer) do
-        if string.find(line, want) then
-            found = true;
-        end
-    end
-    if not found then
-        Runner:raise(string.format("want %s in logs, but could not find it", want))
-    end
-    return found
-end
-
-function Runner:Test()
-    for k, testfn in pairs(Runner) do
-        if string.match(tostring(k), "test") then
-            print(k..":")
-            testfn(Runner)
-        end
-    end
-end
-
-function Runner:testSetLimitValue()
+TestSetLimitValue = {}
+function TestSetLimitValue.test()
     local want = 1;
     StopLevelling:setLimitValue("strength", tostring(want));
     local got = StopLevelling.limit_strength;
-    if Runner:assertEqual(want,got) then print("\tOK") else print("\tFAIL") end
+    lu.assertEquals(got,want);
+    -- if Runner:assertEqual(want,got) then print("\tOK") else print("\tFAIL") end
 end
-function Runner:testSetLimits()
-    local currentValue = StopLevelling.skills_limits_inherit_stats;
-    StopLevelling.skills_limits_inherit_stats = false;
-    local values = {
+
+TestSetLimits = {
+    currentValue = nil,
+    values = {
         {f="Strength", v="strength"},
         {f="Agility", v="agility"},
         {f="Vitality", v="vitality"},
@@ -249,241 +61,287 @@ function Runner:testSetLimits()
         {f="Drinking", v="drinking"},
         {f="HorseRiding", v="horse_riding"},
         {f="WeaponUnarmed", v="weapon_unarmed"},
-    }
-    for _, attr in ipairs(values) do
+    },
+}
+    function TestSetLimits:setUp()
+        TestSetLimits.currentValue = StopLevelling.skills_limits_inherit_stats;
+        StopLevelling.skills_limits_inherit_stats = false;
+    end
+    function TestSetLimits:testSetLimitsSetsValues()
+        for _, attr in ipairs(TestSetLimits.values) do
+            local want = 1;
+            StopLevelling["setLimit"..(attr.f)](StopLevelling, tostring(want))
+            local got = StopLevelling["limit_"..(attr.v)];
+            lu.assertEquals(got, want, attr.v)
+        end
+    end
+    function TestSetLimits:tearDown()
+        StopLevelling.skills_limits_inherit_stats = TestSetLimits.currentValue;
+    end
+
+TestSetStatDeps = {
+    currentSpeechDeps = nil,
+    currentSpeechLevel = nil,
+    currentCraftsmanshipLevel = nil,
+    currentSurvivalLevel = nil,
+    currentThieveryLevel = nil,
+}
+    function TestSetStatDeps:setUp()
+        TestSetStatDeps.currentSpeechDeps = StopLevelling.skills_speech;
+        TestSetStatDeps.currentSpeechLevel = StopLevelling.limit_speech
+        TestSetStatDeps.currentCraftsmanshipLevel = StopLevelling.limit_craftsmanship
+        TestSetStatDeps.currentSurvivalLevel = StopLevelling.limit_survival
+        TestSetStatDeps.currentThieveryLevel = StopLevelling.limit_thievery
+    end
+    function TestSetStatDeps:testSetStatDeps()
+        StopLevelling:setStatDeps("speech", "craftsmanship,survival,thievery");
+        local got = StopLevelling.skills_speech;
+        
+        lu.assertTableContains(got, "craftsmanship","craftsmanship");
+        lu.assertTableContains(got, "survival","survival");
+        lu.assertTableContains(got, "thievery","thievery");
+    end
+    function TestSetStatDeps:tearDown()
+        StopLevelling:setStatDeps("speech", table.concat(TestSetStatDeps.currentSpeechDeps, ","));
+        StopLevelling:setLimitSpeech(tostring(TestSetStatDeps.currentSpeechLevel))
+        StopLevelling:setLimitCraftsmanship(tostring(TestSetStatDeps.currentCraftsmanshipLevel))
+        StopLevelling:setLimitSurvival(tostring(TestSetStatDeps.currentSurvivalLevel))
+        StopLevelling:setLimitThievery(tostring(TestSetStatDeps.currentThieveryLevel))
+    end
+
+
+TestSetLimitsSetsStatsWhenInheritTrue = {
+    currentValue = nil,
+    dataSnapshot = nil,
+}
+    function TestSetLimitsSetsStatsWhenInheritTrue:setUp()
+        TestSetLimitsSetsStatsWhenInheritTrue.currentValue = StopLevelling.skills_limits_inherit_stats;
+        TestSetLimitsSetsStatsWhenInheritTrue.dataSnapshot = StopLevelling.data;
+        StopLevelling:setSkillLimitsInheritStats("true");
+    end
+    function TestSetLimitsSetsStatsWhenInheritTrue:test()
         local want = 1;
-        StopLevelling["setLimit"..(attr.f)](StopLevelling, tostring(want))
-        local got = StopLevelling["limit_"..(attr.v)];
-        if Runner:assertEqual(want,got) then
-            print("\ttestLimit"..attr.f..": OK")
+        StopLevelling:setLimitValue("vitality", tostring(want))
+        lu.assertEquals(StopLevelling.limit_vitality,want, "vitality")
+        lu.assertEquals(StopLevelling.limit_drinking,want, "drinking")
+        lu.assertEquals(StopLevelling.limit_horse_riding,want, "horse_riding")
+        lu.assertEquals(StopLevelling.limit_weapon_unarmed,want, "weapon_unarmed")
+    end
+    function TestSetLimitsSetsStatsWhenInheritTrue:tearDown()
+        StopLevelling.data = TestSetLimitsSetsStatsWhenInheritTrue.dataSnapshot;
+        StopLevelling:setSkillLimitsInheritStats(tostring(TestSetLimitsSetsStatsWhenInheritTrue.currentValue));
+    end
+
+TestAddPerk = {
+    dataSnapshot = nil,
+}
+    function TestAddPerk:setUp()
+        TestAddPerk.dataSnapshot = StopLevelling.data;
+        player.soul = mockagne.getMock();
+    end
+    function TestAddPerk:test()
+        StopLevelling:addPerk("alchemy");
+        mockagne.verify(player.soul:AddPerk(TestAddPerk.dataSnapshot["alchemy"].perk_id))
+        lu.assertIsTrue(StopLevelling.data["alchemy"].perk_added)
+        lu.assertTableContains(System.logBuffer, "$3[DEBUG][StopLevelling] Added XP blocking perk for Alchemy (key=alchemy)")
+    end
+    function TestAddPerk:tearDown()
+        StopLevelling.data = TestAddPerk.dataSnapshot;
+        player.soul = nil;
+    end
+
+TestRemovePerk = {
+    dataSnapshot = nil,
+}
+        function TestRemovePerk:setUp()
+            TestRemovePerk.dataSnapshot = StopLevelling.data;
+            player.soul = mockagne.getMock();
+            StopLevelling:addPerk("alchemy");
+        end
+        function TestRemovePerk:test()
+            StopLevelling:removePerk('alchemy');
+            mockagne.verify(player.soul:RemovePerk(TestRemovePerk.dataSnapshot['alchemy'].perk_id))
+            lu.assertIsFalse(StopLevelling.data["alchemy"].perk_added)
+            lu.assertTableContains(System.logBuffer, "$3[DEBUG][StopLevelling] Removed XP blocking perk for Alchemy (key=alchemy)")
+        end
+        function TestRemovePerk:tearDown()
+            StopLevelling.data = TestRemovePerk.dataSnapshot;
+            player.soul = nil;
+        end
+
+TestTrimXPOnStatWithXPModifier = {
+    inheritValue = nil,
+    dataSnapshot = nil,
+}
+    function TestTrimXPOnStatWithXPModifier:setUp()
+        TestTrimXPOnStatWithXPModifier.inheritValue = StopLevelling.skills_limits_inherit_stats;
+        TestTrimXPOnStatWithXPModifier.dataSnapshot = StopLevelling.data;
+        StopLevelling:setSkillLimitsInheritStats("false");
+        player.soul = mockagne.getMock()
+        -- setup
+        for k, v in pairs(StopLevelling.data) do
+            k = tostring(k)
+            if k == "strength" then
+                mockagne.when(player.soul:GetStatLevel(k)).thenAnswer(6);
+                mockagne.when(player.soul:HasPerk(v.perk_id, false)).thenAnswer(false);
+                mockagne.when(player.soul:AddPerk(k));
+                StopLevelling:setLimitValue(k, 5)
+            else 
+                StopLevelling:setLimitValue(k, 25)
+                if v.is_stat then
+                    mockagne.when(player.soul:GetStatLevel(k)).thenAnswer(21);
+                else
+                    mockagne.when(player.soul:GetSkillLevel(k)).thenAnswer(21);
+                end
+            end
         end
     end
-    StopLevelling.skills_limits_inherit_stats = currentValue;
-end
+    function TestTrimXPOnStatWithXPModifier:testStrength()
 
-function Runner:testSetStatDeps()
-    local currentSpeechDeps = StopLevelling.skills_speech;
-    StopLevelling:setStatDeps("speech", "craftsmanship,survival,thievery");
-    local currentSpeechLevel = StopLevelling.limit_speech
-    local currentCraftsmanshipLevel = StopLevelling.limit_craftsmanship
-    local currentSurvivalLevel = StopLevelling.limit_survival
-    local currentThieveryLevel = StopLevelling.limit_thievery
-    local got = StopLevelling.skills_speech;
+        StopLevelling:trimxp();
+        mockagne.verify(player.soul:AddPerk("59fb8183-8474-4f60-aed0-eb6afe572e53"));
+        --assert logs
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Stat strength (Strength)")
+        lu.assertNotTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming 61 XP for Stat strength (Strength)")
+    end
+    function TestTrimXPOnStatWithXPModifier:tearDown()
+        StopLevelling:setSkillLimitsInheritStats(
+            tostring(TestTrimXPOnStatWithXPModifier.inheritValue));
+        StopLevelling.data = TestTrimXPOnStatWithXPModifier.dataSnapshot;
+        player.soul = nil;
+    end
+
+TestTrimXPOnStatWithoutXPModifier = {
+    inheritValue = nil,
+    dataSnapshot = nil,
+}
+        function TestTrimXPOnStatWithoutXPModifier:setUp()
+            TestTrimXPOnStatWithoutXPModifier.inheritValue = StopLevelling.skills_limits_inherit_stats;
+            TestTrimXPOnStatWithoutXPModifier.dataSnapshot = StopLevelling.data;
+            StopLevelling:setSkillLimitsInheritStats("false");
+            player.soul = mockagne.getMock()
+            -- setup
+            for k, v in pairs(StopLevelling.data) do
+                k = tostring(k)
+                if k == "speech" then
+                    mockagne.when(player.soul:GetStatLevel(k)).thenAnswer(6);
+                    mockagne.when(player.soul:GetStatProgress(k)).thenAnswer(0.60);
+                    mockagne.when(player.soul:GetNextLevelStatXP(k, 6)).thenAnswer(100);
+                    mockagne.when(player.soul:HasPerk(v.perk_id, false)).thenAnswer(false);
+                    mockagne.when(player.soul:AddPerk(k));
+                    StopLevelling:setLimitValue(k, 5)
+                else 
+                    StopLevelling:setLimitValue(k, 25)
+                    if v.is_stat then
+                        mockagne.when(player.soul:GetStatLevel(k)).thenAnswer(21);
+                    else
+                        mockagne.when(player.soul:GetSkillLevel(k)).thenAnswer(21);
+                    end
+                end
+            end
+        end
+        function TestTrimXPOnStatWithoutXPModifier:testSpeech()
+            StopLevelling:trimxp();
+            mockagne.verify(player.soul:AddPerk("77368463-bda8-4043-b872-dab47857580b"));
+            mockagne.verify(player.soul:AddStatXP("speech", -1 * math.floor( 0.6 * 100) + 1 ));
+            --assert logs
+            lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Stat speech (Speech)")
+            lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -59 XP for Stat speech (Speech)")
+        end
+        function TestTrimXPOnStatWithoutXPModifier:tearDown()
+            StopLevelling:setSkillLimitsInheritStats(
+                tostring(TestTrimXPOnStatWithoutXPModifier.inheritValue));
+            StopLevelling.data = TestTrimXPOnStatWithoutXPModifier.dataSnapshot;
+            player.soul = nil;
+        end
     
-    if Runner:assertHasValue(got, "craftsmanship") then print("\t craftsmanship OK") end
-    if Runner:assertHasValue(got, "survival") then print("\t survival OK") end
-    if Runner:assertHasValue(got, "thievery") then print("\t thievery OK") end
-    StopLevelling:setStatDeps("speech", table.concat(currentSpeechDeps, ","));
-    StopLevelling:setLimitSpeech(tostring(currentSpeechLevel))
-    StopLevelling:setLimitCraftsmanship(tostring(currentCraftsmanshipLevel))
-    StopLevelling:setLimitSurvival(tostring(currentSurvivalLevel))
-    StopLevelling:setLimitThievery(tostring(currentThieveryLevel))
-end
 
-function Runner:testSetLimitsSetsStatsWhenInheritTrue()
-    local currentValue = StopLevelling.skills_limits_inherit_stats;
-    StopLevelling:setSkillLimitsInheritStats("true");
-
-    
-    local want = 1;
-    StopLevelling:setLimitValue("vitality", tostring(want))
-
-    local a = Runner:assertEqual(want, StopLevelling.limit_vitality, "vitality")
-    local b = Runner:assertEqual(want, StopLevelling.limit_drinking, "drinking")
-    local c = Runner:assertEqual(want, StopLevelling.limit_horse_riding, "horse_riding")
-    local d = Runner:assertEqual(want, StopLevelling.limit_weapon_unarmed, "weapon_unarmed")
-
-    if a and b and c and d then
-        print("\tOK")
-    end
-
-    StopLevelling:setSkillLimitsInheritStats(tostring(currentValue));
-end
-
-function Runner:testLogsOnInit()
-    local want = "STOP LEVELLING";
-    if Runner:assertLogged(want) then print("\tOK") end
-end
-
-
-function Runner:testAddAllPerks()
-    player:clear()
-    local perks = {
-        '59fb8183-8474-4f60-aed0-eb6afe572e53',
-        '03b7b530-0f9d-41e6-996f-8a39bb0d070c',
-        '74251454-09b1-4c22-b36e-ac6177bc4c3b',
-        '77368463-bda8-4043-b872-dab47857580b',
-        '2f2b9d82-9a91-40f0-bedb-ab53cb333127',
-        '52a593f8-3fc7-46d8-a389-4ca47cd3a22e',
-        '1ede484d-b2bf-4c4b-a275-e9fa765bc7d3',
-        '98bb8ae8-1fc3-4ac0-8784-58106a421abf',
-        '4e0a8900-d9bc-49f8-bd36-fcded2c1ad79',
-        '643ff10b-534d-4a1b-99ae-971fb085d1d8',
-        '4d0d74ce-3e4e-4683-908e-61546b0b0b2e',
-        '743554e5-5af4-4cd0-9844-f579c2020392',
-        '9a28f2ca-c48c-4747-a574-c0d233144206',
-        'da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2',
-        'c76cce08-5fa9-4441-a44e-01c5d4a4a9d9',
-        '0341d739-e37b-4b10-84c2-eee6e323493c',
-        'e3da758a-3c05-4109-a7b9-8fa7bbf48824',
-        '89ac270e-20b2-4381-96d6-27cf791e944f',
-        '93551fe9-bb0c-4242-8aea-8de2db44952e',
-    }
-    for _, perkid in ipairs(perks) do
-        player:expect("AddPerk", perkid)
-    end
-    StopLevelling:addAllPerks();
-    if player:assertExpectations() then print("\tOK") end
-end
-
-function Runner:testRemoveAllPerks()
-    player:clear()
-    local perks = {
-        '59fb8183-8474-4f60-aed0-eb6afe572e53',
-        '03b7b530-0f9d-41e6-996f-8a39bb0d070c',
-        '74251454-09b1-4c22-b36e-ac6177bc4c3b',
-        '77368463-bda8-4043-b872-dab47857580b',
-        '2f2b9d82-9a91-40f0-bedb-ab53cb333127',
-        '52a593f8-3fc7-46d8-a389-4ca47cd3a22e',
-        '1ede484d-b2bf-4c4b-a275-e9fa765bc7d3',
-        '98bb8ae8-1fc3-4ac0-8784-58106a421abf',
-        '4e0a8900-d9bc-49f8-bd36-fcded2c1ad79',
-        '643ff10b-534d-4a1b-99ae-971fb085d1d8',
-        '4d0d74ce-3e4e-4683-908e-61546b0b0b2e',
-        '743554e5-5af4-4cd0-9844-f579c2020392',
-        '9a28f2ca-c48c-4747-a574-c0d233144206',
-        'da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2',
-        'c76cce08-5fa9-4441-a44e-01c5d4a4a9d9',
-        '0341d739-e37b-4b10-84c2-eee6e323493c',
-        'e3da758a-3c05-4109-a7b9-8fa7bbf48824',
-        '89ac270e-20b2-4381-96d6-27cf791e944f',
-        '93551fe9-bb0c-4242-8aea-8de2db44952e',
-    }
-    for _, perkid in ipairs(perks) do
-        player:expect("RemovePerk", perkid)
-    end
-    StopLevelling:removeAllPerks();
-    if player:assertExpectations() then print("\tOK") end
-end
-
--- test against stat that perk blocks fully (strength)
-function Runner:testTrimxpStatWithXPModifierPerkOverLimit()
-    player:clear()
-    -- setup
-    for k, v in pairs(StopLevelling.data) do
-        if k == "strength" then
-            player:expect("GetStatProgress", tostring(k), nil, 0.50);
-            player:expect("GetStatLevel", tostring(k), nil, 20);
-            player:expect("HasPerk", v.perk_id, nil, false);
-            player:expect("AddPerk", v.perk_id);
-            StopLevelling.data[k]["limit"] = 5;
-        else 
-            StopLevelling.data[k]["limit"] = 25;
-            if v.is_stat then
-                player:expect("GetStatProgress", tostring(k), nil, 0.15);
-                player:expect("GetStatLevel", tostring(k), nil, 20);
-            else
-                player:expect("GetSkillProgress", tostring(k), nil, 0.15);
-                player:expect("GetSkillLevel", tostring(k), nil, 20);
+TestTrimXPOnSkillWithXPModifier = {
+    inheritValue = nil,
+    dataSnapshot = nil,
+}
+    function TestTrimXPOnSkillWithXPModifier:setUp()
+        TestTrimXPOnSkillWithXPModifier.inheritValue = StopLevelling.skills_limits_inherit_stats;
+        TestTrimXPOnSkillWithXPModifier.dataSnapshot = StopLevelling.data;
+        StopLevelling:setSkillLimitsInheritStats("false");
+        player.soul = mockagne.getMock()
+        -- setup
+        for k, v in pairs(StopLevelling.data) do
+            k = tostring(k)
+            if k == "craftsmanship" then
+                mockagne.when(player.soul:GetSkillLevel(k)).thenAnswer(6);
+                mockagne.when(player.soul:HasPerk(v.perk_id, false)).thenAnswer(false);
+                mockagne.when(player.soul:AddPerk(k));
+                StopLevelling:setLimitValue(k, 5)
+            else 
+                StopLevelling:setLimitValue(k, 25)
+                if v.is_stat then
+                    mockagne.when(player.soul:GetStatLevel(k)).thenAnswer(21);
+                else
+                    mockagne.when(player.soul:GetSkillLevel(k)).thenAnswer(21);
+                end
             end
         end
     end
+    function TestTrimXPOnSkillWithXPModifier:testCraftsmanship()
+        StopLevelling:trimxp();
+        mockagne.verify(player.soul:AddPerk("2f2b9d82-9a91-40f0-bedb-ab53cb333127"));
+        --assert logs
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Skill craftsmanship (Craftsmanship)")
+        lu.assertNotTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -59 XP for Skill craftsmanship (Craftsmanship)")
+    end
+    function TestTrimXPOnSkillWithXPModifier:tearDown()
+        StopLevelling:setSkillLimitsInheritStats(
+            tostring(TestTrimXPOnSkillWithXPModifier.inheritValue));
+        StopLevelling.data = TestTrimXPOnSkillWithXPModifier.dataSnapshot;
+        player.soul = nil;
+    end
 
-    StopLevelling:trimxp();
-
-    if player:assertExpectations() then print("\tOK") end
-end
-
--- test against stat that perk does not block (speech)
-function Runner:testTrimxpStatWithoutXPModifierPerkOverLimit()
-    player:clear()
-    -- setup
-    for k, v in pairs(StopLevelling.data) do
-        if k == "speech" then
-            player:expect("GetStatProgress", tostring(k), nil, 0.50);
-            player:expect("GetStatLevel", tostring(k), nil, 20);
-            player:expect("HasPerk", v.perk_id, nil, false);
-            player:expect("AddPerk", v.perk_id);
-            StopLevelling.data[k]["limit"] = 5;
-        else 
-            StopLevelling.data[k]["limit"] = 25;
-            if v.is_stat then
-                player:expect("GetStatProgress", tostring(k), nil, 0.15);
-                player:expect("GetStatLevel", tostring(k), nil, 20);
-            else
-                player:expect("GetSkillProgress", tostring(k), nil, 0.15);
-                player:expect("GetSkillLevel", tostring(k), nil, 20);
+TestTrimXPOnSkillWithoutXPModifier = {
+    inheritValue = nil,
+    dataSnapshot = nil,
+}
+    function TestTrimXPOnSkillWithoutXPModifier:setUp()
+        TestTrimXPOnSkillWithoutXPModifier.inheritValue = StopLevelling.skills_limits_inherit_stats;
+        TestTrimXPOnSkillWithoutXPModifier.dataSnapshot = StopLevelling.data;
+        StopLevelling:setSkillLimitsInheritStats("false");
+        player.soul = mockagne.getMock()
+        -- setup
+        for k, v in pairs(StopLevelling.data) do
+            k = tostring(k)
+            if k == "alchemy" then
+                mockagne.when(player.soul:GetSkillLevel(k)).thenAnswer(6);
+                mockagne.when(player.soul:GetSkillProgress(k)).thenAnswer(0.60);
+                mockagne.when(player.soul:GetNextLevelSkillXP(k, 6)).thenAnswer(100);
+                mockagne.when(player.soul:HasPerk(v.perk_id, false)).thenAnswer(false);
+                mockagne.when(player.soul:AddPerk(k));
+                StopLevelling:setLimitValue(k, 5)
+            else 
+                StopLevelling:setLimitValue(k, 25)
+                if v.is_stat then
+                    mockagne.when(player.soul:GetStatLevel(k)).thenAnswer(21);
+                else
+                    mockagne.when(player.soul:GetSkillLevel(k)).thenAnswer(21);
+                end
             end
         end
     end
+    function TestTrimXPOnSkillWithoutXPModifier:testAlchemy()
 
-    player:expect("AddStatXP", "speech", -50);
-    StopLevelling:trimxp();
-    if player:assertExpectations() then print("\tOK") end
-end
-
-function Runner:testTrimxpSkillWithXPModifierPerkOverLimit()
-    local inheritValue = StopLevelling.skills_limits_inherit_stats;
-    StopLevelling:setSkillLimitsInheritStats("false");
-    player:clear()
-    -- setup
-    for k, v in pairs(StopLevelling.data) do
-        if k == "craftsmanship" then
-            player:expect("GetSkillProgress", tostring(k), nil, 0.60);
-            player:expect("GetSkillLevel", tostring(k), nil, 6);
-            player:expect("HasPerk", v.perk_id, nil, false);
-            player:expect("AddPerk", v.perk_id);
-            StopLevelling.data[k]["limit"] = 5;
-        else 
-            StopLevelling.data[k]["limit"] = 25;
-            if v.is_stat then
-                player:expect("GetStatProgress", tostring(k), nil, 0.12);
-                player:expect("GetStatLevel", tostring(k), nil, 21);
-            else
-                player:expect("GetSkillProgress", tostring(k), nil, 0.12);
-                player:expect("GetSkillLevel", tostring(k), nil, 21);
-            end
-        end
+        StopLevelling:trimxp();
+        mockagne.verify(player.soul:AddPerk("da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2"));
+        mockagne.verify(player.soul:AddSkillXP("alchemy", -1 * math.floor( 0.6 * 100) + 1 ));
+        --assert logs
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Skill alchemy (Alchemy)")
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -59 XP for Skill alchemy (Alchemy)")
+    end
+    function TestTrimXPOnSkillWithoutXPModifier:tearDown()
+        StopLevelling:setSkillLimitsInheritStats(
+            tostring(TestTrimXPOnSkillWithoutXPModifier.inheritValue));
+        StopLevelling.data = TestTrimXPOnSkillWithoutXPModifier.dataSnapshot;
+        player.soul = nil;
     end
 
-    StopLevelling:trimxp();
 
-    if player:assertExpectations() then print("\tOK") end
 
-    StopLevelling:setSkillLimitsInheritStats(tostring(inheritValue));
-end
-
-function Runner:testTrimxpSkillWithoutXPModifierPerkOverLimit()
-    local inheritValue = StopLevelling.skills_limits_inherit_stats;
-    StopLevelling:setSkillLimitsInheritStats("false");
-    player:clear()
-    -- setup
-    for k, v in pairs(StopLevelling.data) do
-        if k == "alchemy" then
-            player:expect("GetSkillProgress", tostring(k), nil, 0.60);
-            player:expect("GetSkillLevel", tostring(k), nil, 6);
-            player:expect("HasPerk", v.perk_id, nil, false);
-            player:expect("AddPerk", v.perk_id);
-            StopLevelling.data[k]["limit"] = 5;
-        else 
-            StopLevelling.data[k]["limit"] = 25;
-            if v.is_stat then
-                player:expect("GetStatProgress", tostring(k), nil, 0.12);
-                player:expect("GetStatLevel", tostring(k), nil, 21);
-            else
-                player:expect("GetSkillProgress", tostring(k), nil, 0.12);
-                player:expect("GetSkillLevel", tostring(k), nil, 21);
-            end
-        end
-    end
-
-    player:expect("AddSkillXP", "alchemy", -50);
-
-    StopLevelling:trimxp();
-
-    if player:assertExpectations() then print("\tOK") end
-
-    StopLevelling:setSkillLimitsInheritStats(tostring(inheritValue));
-end
-
-Runner:Test()
+os.exit(lu.LuaUnit.run())
