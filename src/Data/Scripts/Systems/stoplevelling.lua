@@ -331,68 +331,80 @@ function StopLevelling:skillDeps()
 end
 
 function StopLevelling:trimxp()
-    for k, v in pairs(StopLevelling.data) do
+    for statOrSkill, v in pairs(StopLevelling.data) do
+        statOrSkill = tostring(statOrSkill)
         local currentProgress = 0.0;
         local currentLevel = 0;
+        -- needed xp from 0 to next-level
+        local xpToRemove = 0;
         local limit = v.limit;
-
-        if v.is_stat then
-            currentProgress = player.soul:GetStatProgress(tostring(k));
-            currentLevel = player.soul:GetStatLevel(tostring(k));
-        else
-            currentProgress = player.soul:GetSkillProgress(tostring(k));
-            currentLevel = player.soul:GetSkillLevel(tostring(k));
-        end
-        
-        if not v.is_stat and StopLevelling.skills_limits_inherit_stats then
-            limit = StopLevelling.data[v.governing_stat]["limit"];
-        end
         local noun = "Stat"
-        if not v.is_stat then noun = "Skill" end
+
+        
+        if v.is_stat then
+            currentLevel = tonumber(player.soul:GetStatLevel(statOrSkill));
+        else
+            noun = "Skill";
+            currentLevel = tonumber(player.soul:GetSkillLevel(statOrSkill));
+            if StopLevelling.skills_limits_inherit_stats then
+                limit = StopLevelling.data[v.governing_stat].limit;
+            end
+        end
         
         if currentLevel ~= nil then
-            if tonumber(currentLevel) >= limit then
+            -- skip all execution if current statOrSkill level below limit
+            if currentLevel < limit then goto continue end
+            
+            if currentLevel >= limit then
                 local alreadyHasPerk = player.soul:HasPerk(v.perk_id, false);
                 if alreadyHasPerk ~= nil then
                     if not alreadyHasPerk and not v.perk_added then
-                        System.LogAlways(string.format("$5[INFO][StopLevelling] adding XP blocking perk for %s %s (%s)", noun, tostring(k), tostring(v.name)));
+                        System.LogAlways(string.format("$5[INFO][StopLevelling] adding XP blocking perk for %s %s (%s)", noun, statOrSkill, tostring(v.name)));
                         player.soul:AddPerk(v.perk_id)
                         v.perk_added = true;
                     end
                 end
             end
         end
+        
+        -- if the stat or skill doesn't have a full blocking perk, we need to trim
         if not v.perk_blocks_fully then
-            -- only > 50% progress, above limit level, gets XP trimmed
+            if v.is_stat then 
+                currentProgress = tonumber(player.soul:GetStatProgress(statOrSkill));
+                if currentLevel ~= nil and currentProgress ~= nil then
+                    xpToRemove = -1 * math.floor(player.soul:GetNextLevelStatXP(statOrSkill, currentLevel) * currentProgress) + 1;
+                end
+            else
+                currentProgress = tonumber(player.soul:GetSkillProgress(statOrSkill));
+                if currentLevel ~= nil and currentProgress ~= nil then
+                    xpToRemove = -1 * math.floor(player.soul:GetNextLevelSkillXP(statOrSkill, currentLevel) * currentProgress) + 1;
+                end
+            end
+            -- only > 10% progress, above limit level, gets XP trimmed
             if currentProgress ~= nil and currentLevel ~= nil then
-                if tonumber(currentProgress) >= 0.5 and tonumber(currentLevel) >= limit then
-                    -- ideally we would call player.soul:GetNextLevelStatXP or player.soul:GetNextLevelSkillXP
-                    -- to get the exact amount and remove all XP, but those methods don't seem to return anything
-                    -- at the moment
-                    System.LogAlways(string.format("$5[INFO][StopLevelling] trimming XP for %s %s (%s)", noun, tostring(k), tostring(v.name)));
+                if currentProgress >= 0.1 and currentLevel >= limit then
+                    System.LogAlways(string.format("$5[INFO][StopLevelling] trimming %d XP for %s %s (%s)", xpToRemove, noun, statOrSkill, v.name));
                     if v.is_stat then
-                        player.soul:AddStatXP(tostring(k), -40);
+                        player.soul:AddStatXP(statOrSkill, xpToRemove);
                     else
-                        player.soul:AddSkillXP(tostring(k), -40);
+                        player.soul:AddSkillXP(statOrSkill, xpToRemove);
                     end
                 end
             end
         end
-    end
-        
+        ::continue::
+    end 
 end
 
 function StopLevelling:addAllPerks()
     for k, v in pairs(StopLevelling.data) do
-        player.soul:AddPerk(tostring(v.perk_id))
-        System.LogAlways(string.format("$3[DEBUG][StopLevelling] Added XP blocking perk for %s (key=%s)", tostring(v.name), tostring(k)));
+        StopLevelling:addPerk(tostring(k))
     end
 end
 
 function StopLevelling:removeAllPerks()
     for k, v in pairs(StopLevelling.data) do
-        player.soul:RemovePerk(tostring(v.perk_id))
-        System.LogAlways(string.format("$3[DEBUG][StopLevelling] Removed XP blocking perk for %s (key=%s)", tostring(v.name), tostring(k)));
+        StopLevelling:removePerk(tostring(k))
     end
 end
 
@@ -400,6 +412,7 @@ function StopLevelling:addPerk(line)
     local entry = StopLevelling.data[tostring(line)];
     if entry ~= nil then
         player.soul:AddPerk(tostring(entry.perk_id))
+        StopLevelling.data[tostring(line)].perk_added = true;
         System.LogAlways(string.format("$3[DEBUG][StopLevelling] Added XP blocking perk for %s (key=%s)", tostring(entry.name), tostring(tostring(line))));
     end
 end
@@ -407,51 +420,11 @@ end
 function StopLevelling:removePerk(line)
     local entry = StopLevelling.data[tostring(line)];
     if entry ~= nil then
-        player.soul:RemovePerk(tostring(entry.perk_id))
+        player.soul:RemovePerk(tostring(entry.perk_id));
+        StopLevelling.data[tostring(line)].perk_added = false;
         System.LogAlways(string.format("$3[DEBUG][StopLevelling] Removed XP blocking perk for %s (key=%s)", tostring(entry.name), tostring(tostring(line))));
     end
 end
-
-
-
-
-function StopLevelling:funcsign(f)
-    assert(type(f) == 'function', "bad argument #1 to 'funcsign' (function expected)")
-    local p = {}
-    pcall(
-       function()
-          local oldhook
-          local delay = 2
-          local function hook(event, line)
-             delay = delay - 1
-             if delay == 0 then
-                for i = 1, math.huge do
-                   local k, v = debug.getlocal(2, i)
-                   if type(v) == "table" then
-                      table.insert(p, "...")
-                      break
-                   elseif (k or '('):sub(1, 1) == '(' then
-                      break
-                   else
-                      table.insert(p, k)
-                   end
-                end
-                if debug.getlocal(2, -1) then
-                   table.insert(p, "...")
-                end
-                debug.sethook(oldhook)
-                System.LogAlways(tostring(error('aborting the call')))
-             end
-          end
-          oldhook = debug.sethook(hook, "c")
-          local arg = {}
-          for j = 1, 64 do arg[#arg + 1] = true end
-          f((table.unpack or unpack)(arg))
-       end)
-       System.LogAlways("function("..table.concat(p, ",")..")")
-    return "function("..table.concat(p, ",")..")"
- end
- 
 
 function StopLevelling:initTimers()
 	System.LogAlways("$5[INFO][StopLevelling] Init timers");

@@ -1,6 +1,7 @@
-.PHONY: export test
+.PHONY: build test
 EXPORTDIR := "./biterplease_stop_levelling"
 LANGUAGES := English
+LUA_INIT := "src/setup_test"
 
 build:
 	@rm -rf "${EXPORTDIR}" ./zips/*
@@ -24,7 +25,10 @@ build:
 		./biterplease_stop_levelling/Data/StopLevelling.pak \
 		./biterplease_stop_levelling/Localization/English_xml.pak \
 		./biterplease_stop_levelling/mod.manifest \
-		./biterplease_stop_levelling/mod.cfg \
+		./biterplease_stop_levelling/mod.cfg
+
+buildtogame: build
+	@cp "${EXPORTDIR}/Data/StopLevelling.pak" "/mnt/c/Program Files (x86)/Steam/steamapps/common/KingdomComeDeliverance2/Mods/biterplease_stop_levelling/Data/"
 
 test:
-	@lua ./src/stoplevelling_test.lua
+	@lua -l ${LUA_INIT} ./src/stoplevelling_test.lua -v
