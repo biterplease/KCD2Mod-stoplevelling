@@ -1,5 +1,6 @@
 package = "KCD2Mod-stoplevelling"
 version = "dev-1"
+rockspec_format = "3.0"
 source = {
    url = "git+ssh://git@github.com/biterplease/KCD2Mod-stoplevelling.git"
 }
@@ -25,5 +26,4 @@ test = {
 }
 test_dependencies = {
    "luaunit >= 3.4"
-   "inspect"
 }
