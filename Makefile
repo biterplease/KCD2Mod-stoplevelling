@@ -1,5 +1,5 @@
 .PHONY: build test
-EXPORTDIR := "./biterplease_stop_levelling"
+EXPORTDIR := ./biterplease_stop_levelling
 LANGUAGES := English
 LUA_INIT := "src/setup_test"
 
@@ -27,8 +27,12 @@ build:
 		./biterplease_stop_levelling/mod.manifest \
 		./biterplease_stop_levelling/mod.cfg
 
+# WSL doesn't like spaces in its paths. Make sure the directories exist first in $GAMEDIR/Mods/biterplease_stop_levelling/Data and $GAMEDIR/Mods/biterplease_stop_levelling/Localization
 buildtogame: build
 	@cp "${EXPORTDIR}/Data/StopLevelling.pak" "/mnt/c/Program Files (x86)/Steam/steamapps/common/KingdomComeDeliverance2/Mods/biterplease_stop_levelling/Data/"
+	@cp "${EXPORTDIR}/Localization/English_xml.pak" "/mnt/c/Program Files (x86)/Steam/steamapps/common/KingdomComeDeliverance2/Mods/biterplease_stop_levelling/Localization/"
+	@cp "${EXPORTDIR}/mod.cfg" "/mnt/c/Program Files (x86)/Steam/steamapps/common/KingdomComeDeliverance2/Mods/biterplease_stop_levelling/mod.cfg"
+	@cp "${EXPORTDIR}/mod.manifest" "/mnt/c/Program Files (x86)/Steam/steamapps/common/KingdomComeDeliverance2/Mods/biterplease_stop_levelling/mod.manifest"
 
 test:
 	@lua -l ${LUA_INIT} ./src/stoplevelling_test.lua -v

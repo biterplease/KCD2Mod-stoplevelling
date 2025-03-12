@@ -446,7 +446,6 @@ function StopLevelling:killTimers()
 end
 
 function StopLevelling:xpTrimTimerCallback(nTimerId)
-    -- Restart timer
     StopLevelling.xp_trim_timer_id = Script.SetTimer(StopLevelling.xp_trim_timer_period, function(nTimerId)
         StopLevelling:xpTrimTimerCallback(nTimerId)
     end)
