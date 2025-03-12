@@ -1,4 +1,7 @@
 <Table>
+<Row><Cell>perk_stoplevelling_normalize_name</Cell><Cell>Self aware</Cell><Cell>Self aware</Cell></Row>
+<Row><Cell>perk_stoplevelling_normalize_lore_desc</Cell><Cell>You are acutely aware of your abilities and their limits. Your learning pace, is as steady as ever.</Cell><Cell>You are acutely aware of your abilities and their limits. Your learning pace, is as steady as ever.</Cell></Row>
+<Row><Cell>perk_stoplevelling_normalize_desc</Cell><Cell>Your rate of experience gain cannot be modified.</Cell><Cell>Your rate of experience gain cannot be modified.</Cell></Row>
 <Row><Cell>perk_stoplevelling_strength_name</Cell><Cell>Strength Mastery</Cell><Cell>Strength Mastery</Cell></Row>
 <Row><Cell>perk_stoplevelling_strength_lore_desc</Cell><Cell>You gave it all you had, and learned as much as you could. Despite your best efforts, you don&apos;t feel like you&apos;re getting any better.</Cell><Cell>You gave it all you had, and learned as much as you could. Despite your best efforts, you don&apos;t feel like you&apos;re getting any better.</Cell></Row>
 <Row><Cell>perk_stoplevelling_strength_desc</Cell><Cell>You cannot advance this stat any further.</Cell><Cell>You cannot advance this stat any further.</Cell></Row>

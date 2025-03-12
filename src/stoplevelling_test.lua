@@ -202,7 +202,7 @@ TestTrimXPOnStatWithXPModifier = {
         mockagne.verify(player.soul:AddPerk("59fb8183-8474-4f60-aed0-eb6afe572e53"));
         --assert logs
         lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Stat strength (Strength)")
-        lu.assertNotTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming 61 XP for Stat strength (Strength)")
+        lu.assertNotTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -9 XP for Stat strength (Strength)")
     end
     function TestTrimXPOnStatWithXPModifier:tearDown()
         StopLevelling:setSkillLimitsInheritStats(
@@ -225,7 +225,7 @@ TestTrimXPOnStatWithoutXPModifier = {
                 k = tostring(k)
                 if k == "speech" then
                     mockagne.when(player.soul:GetStatLevel(k)).thenAnswer(6);
-                    mockagne.when(player.soul:GetStatProgress(k)).thenAnswer(0.60);
+                    mockagne.when(player.soul:GetStatProgress(k)).thenAnswer(0.50);
                     mockagne.when(player.soul:GetNextLevelStatXP(k, 6)).thenAnswer(100);
                     mockagne.when(player.soul:HasPerk(v.perk_id, false)).thenAnswer(false);
                     mockagne.when(player.soul:AddPerk(k));
@@ -243,10 +243,10 @@ TestTrimXPOnStatWithoutXPModifier = {
         function TestTrimXPOnStatWithoutXPModifier:testSpeech()
             StopLevelling:trimxp();
             mockagne.verify(player.soul:AddPerk("77368463-bda8-4043-b872-dab47857580b"));
-            mockagne.verify(player.soul:AddStatXP("speech", -1 * math.floor( 0.6 * 100) + 1 ));
+            mockagne.verify(player.soul:AddStatXP("speech", -25 )); -- 50%
             --assert logs
             lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Stat speech (Speech)")
-            lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -59 XP for Stat speech (Speech)")
+            lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -25 XP for Stat speech (Speech)")
         end
         function TestTrimXPOnStatWithoutXPModifier:tearDown()
             StopLevelling:setSkillLimitsInheritStats(
@@ -288,7 +288,7 @@ TestTrimXPOnSkillWithXPModifier = {
         mockagne.verify(player.soul:AddPerk("2f2b9d82-9a91-40f0-bedb-ab53cb333127"));
         --assert logs
         lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Skill craftsmanship (Craftsmanship)")
-        lu.assertNotTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -59 XP for Skill craftsmanship (Craftsmanship)")
+        lu.assertNotTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -25 XP for Skill craftsmanship (Craftsmanship)")
     end
     function TestTrimXPOnSkillWithXPModifier:tearDown()
         StopLevelling:setSkillLimitsInheritStats(
@@ -311,7 +311,7 @@ TestTrimXPOnSkillWithoutXPModifier = {
             k = tostring(k)
             if k == "alchemy" then
                 mockagne.when(player.soul:GetSkillLevel(k)).thenAnswer(6);
-                mockagne.when(player.soul:GetSkillProgress(k)).thenAnswer(0.60);
+                mockagne.when(player.soul:GetSkillProgress(k)).thenAnswer(0.50);
                 mockagne.when(player.soul:GetNextLevelSkillXP(k, 6)).thenAnswer(100);
                 mockagne.when(player.soul:HasPerk(v.perk_id, false)).thenAnswer(false);
                 mockagne.when(player.soul:AddPerk(k));
@@ -330,10 +330,10 @@ TestTrimXPOnSkillWithoutXPModifier = {
 
         StopLevelling:trimxp();
         mockagne.verify(player.soul:AddPerk("da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2"));
-        mockagne.verify(player.soul:AddSkillXP("alchemy", -1 * math.floor( 0.6 * 100) + 1 ));
+        mockagne.verify(player.soul:AddSkillXP("alchemy", -25 ));
         --assert logs
         lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Skill alchemy (Alchemy)")
-        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -59 XP for Skill alchemy (Alchemy)")
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -25 XP for Skill alchemy (Alchemy)")
     end
     function TestTrimXPOnSkillWithoutXPModifier:tearDown()
         StopLevelling:setSkillLimitsInheritStats(

@@ -6,7 +6,7 @@ StopLevelling = {};
 -- ########################################
 
 -- Time in milliseconds to check XP levels and reduce it.
-StopLevelling.xp_trim_timer_period = 15000;
+StopLevelling.xp_trim_timer_period = 10000;
 
 -- Stat limits for your build.
 StopLevelling.limit_strength = 20;
@@ -83,7 +83,7 @@ StopLevelling.xp_trim_timer_id = nil;
 
 function StopLevelling:init()
     System.LogAlways("$5[INFO][StopLevelling] StopLevelling Initialized");
-
+    
     System.AddCCommand("STOPLEVELLING-SET-xp_trim_timer_period", "StopLevelling:setXpTrimTimerPeriod(%line)", "");
     System.AddCCommand("STOPLEVELLING-SET-skills_limits_inherit_stats", "StopLevelling:setSkillLimitsInheritStats(%line)", "");
     System.AddCCommand("STOPLEVELLING-SET-skills_strength", "StopLevelling:setSkillsStrength(%line)", "");
@@ -335,6 +335,7 @@ function StopLevelling:trimxp()
         statOrSkill = tostring(statOrSkill)
         local currentProgress = 0.0;
         local currentLevel = 0;
+        local nextLevelXP = 0;
         -- needed xp from 0 to next-level
         local xpToRemove = 0;
         local limit = v.limit;
@@ -368,17 +369,21 @@ function StopLevelling:trimxp()
                     if v.is_stat then 
                         currentProgress = tonumber(player.soul:GetStatProgress(statOrSkill));
                         if currentLevel ~= nil and currentProgress ~= nil then
-                            xpToRemove = -1 * math.floor(player.soul:GetNextLevelStatXP(statOrSkill, currentLevel) * currentProgress) + 1;
+                            nextLevelXP = tonumber(player.soul:GetNextLevelStatXP(statOrSkill, currentLevel));
                         end
                     else
                         currentProgress = tonumber(player.soul:GetSkillProgress(statOrSkill));
                         if currentLevel ~= nil and currentProgress ~= nil then
-                            xpToRemove = -1 * math.floor(player.soul:GetNextLevelSkillXP(statOrSkill, currentLevel) * currentProgress) + 1;
+                            nextLevelXP = tonumber(player.soul:GetNextLevelSkillXP(statOrSkill, currentLevel));
                         end
                     end
-                    -- only > 10% progress, above limit level, gets XP trimmed
+                    -- reduce XP by 50% of current + 1
+                    -- GetStatLevel and GetSkillLevel both take buffs into account, if the level finds itself inflated
+                    -- by buffs, halving it would prevent overflowing the uint
+                    xpToRemove = math.floor((-1 * nextLevelXP * currentProgress )*0.5) ;
+                    -- only > 20% progress, above limit level, gets XP trimmed
                     if currentProgress ~= nil and currentLevel ~= nil then
-                        if currentProgress >= 0.1 and currentLevel >= limit then
+                        if currentProgress >= 0.15 and currentLevel >= limit then
                             System.LogAlways(string.format("$5[INFO][StopLevelling] trimming %d XP for %s %s (%s)", xpToRemove, noun, statOrSkill, v.name));
                             if v.is_stat then
                                 player.soul:AddStatXP(statOrSkill, xpToRemove);
@@ -452,6 +457,8 @@ end
 function StopLevelling:GameLoaded(elementName, instanceId, eventName, argTable)
     System.LogAlways("$5[INFO][StopLevelling] Load config");
     System.ExecuteCommand("exec Mods/biterplease_stop_levelling/mod.cfg")
+    System.LogAlways(string.format("$5[INFO][StopLevelling] Normalizing player XP through perk %s", "SelfAware"));
+    player.soul:AddPerk("eba9001e-1c8e-4219-a6ba-99d6aa668dbd");
     StopLevelling:initTimers()
 end
 UIAction.RegisterEventSystemListener(StopLevelling, "", "OnGameplayStarted", "GameLoaded")

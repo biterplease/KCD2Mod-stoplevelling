@@ -3,7 +3,8 @@
 	<buffs version="1">
 	<!-- <buff buff_class_id="15" buff_exclusivity_id="1" buff_id="3abfb65b-ec73-4f52-9bf9-c0a6a044b687" buff_lifetime_id="0" buff_name="prepadeni_XpGainNullifier" buff_params="xpm*0" duration="-1" implementation="Cpp:Constant" is_persistent="false" /> -->
 		<!-- Stop levelling buffs -->
-		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="ae1e37ce-f6f7-4125-8742-a7d099239e26" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_all" buff_params="xpm*0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
+		<!-- Prevent XP modifiers  on "xpm" to take place -->
+		<buff buff_class_id="4" buff_exclusivity_id="2" buff_id="ae1e37ce-f6f7-4125-8742-a7d099239e26" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_all" buff_params="xpm=1" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
 
 		<!-- Stat blockers -->
 		<buff buff_class_id="4" buff_exclusivity_id="1" buff_id="8b77a709-e29a-4afa-aff4-52788563e089" buff_lifetime_id="1" buff_name="perk_stop_leveling_block_strength" buff_params="xst%0,hgs%0" duration="-1" icon_id="replaceme" implementation="Cpp:Constant" is_persistent="true" />
