@@ -377,7 +377,7 @@ function StopLevelling:trimxp()
                             nextLevelXP = tonumber(player.soul:GetNextLevelSkillXP(statOrSkill, currentLevel));
                         end
                     end
-                    -- reduce XP by 50% of current + 1
+                    -- reduce XP by 50% of current xp progress
                     -- GetStatLevel and GetSkillLevel both take buffs into account, if the level finds itself inflated
                     -- by buffs, halving it would prevent overflowing the uint
                     xpToRemove = math.floor((-1 * nextLevelXP * currentProgress )*0.5) ;

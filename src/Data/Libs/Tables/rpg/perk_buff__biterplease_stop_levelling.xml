@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="barbora" xsi:noNamespaceSchemaLocation="../database.xsd">
 	<perk_buffs version="1">
-		<perk_buff buff_id="ae1e37ce-f6f7-4125-8742-a7d099239e26" perk_id="eba9001e-1c8e-4219-a6ba-99d6aa668dbd" /> <!-- all-->
+		<perk_buff buff_id="ae1e37ce-f6f7-4125-8742-a7d099239e26" perk_id="eba9001e-1c8e-4219-a6ba-99d6aa668dbd" /> <!-- xpm -->
 
 		<perk_buff buff_id="8b77a709-e29a-4afa-aff4-52788563e089" perk_id="59fb8183-8474-4f60-aed0-eb6afe572e53" /> <!-- strength-->
 		<perk_buff buff_id="e89ac30e-0a15-41ce-93a6-84df776afb4f" perk_id="03b7b530-0f9d-41e6-996f-8a39bb0d070c" /> <!-- agility-->
