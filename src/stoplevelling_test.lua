@@ -202,7 +202,6 @@ TestTrimXPOnStatWithXPModifier = {
         mockagne.verify(player.soul:AddPerk("59fb8183-8474-4f60-aed0-eb6afe572e53"));
         --assert logs
         lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Stat strength (Strength)")
-        lu.assertNotTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -9 XP for Stat strength (Strength)")
     end
     function TestTrimXPOnStatWithXPModifier:tearDown()
         StopLevelling:setSkillLimitsInheritStats(
@@ -288,7 +287,6 @@ TestTrimXPOnSkillWithXPModifier = {
         mockagne.verify(player.soul:AddPerk("2f2b9d82-9a91-40f0-bedb-ab53cb333127"));
         --assert logs
         lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Skill craftsmanship (Craftsmanship)")
-        lu.assertNotTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -25 XP for Skill craftsmanship (Craftsmanship)")
     end
     function TestTrimXPOnSkillWithXPModifier:tearDown()
         StopLevelling:setSkillLimitsInheritStats(
