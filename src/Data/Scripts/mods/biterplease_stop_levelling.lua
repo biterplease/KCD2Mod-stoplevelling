@@ -57,26 +57,50 @@ StopLevelling.limit_horse_riding = 20;
 StopLevelling.limit_weapon_unarmed = 20;
 
 StopLevelling.data = {
-    strength =          {name = "Strength",      governing_stat = nil,        perk_id = '59fb8183-8474-4f60-aed0-eb6afe572e53', is_stat = true , limit = 20, perk_blocks_fully=true, perk_added=false},
-    agility =           {name = "Agility",       governing_stat = nil,        perk_id = '03b7b530-0f9d-41e6-996f-8a39bb0d070c', is_stat = true , limit = 20, perk_blocks_fully=true, perk_added=false},
-    vitality =          {name = "Vitality",      governing_stat = nil,        perk_id = '74251454-09b1-4c22-b36e-ac6177bc4c3b', is_stat = true , limit = 20, perk_blocks_fully=true, perk_added=false},
-    speech =            {name = "Speech",        governing_stat = nil,        perk_id = '77368463-bda8-4043-b872-dab47857580b', is_stat = true , limit = 20, perk_blocks_fully=false, perk_added=false},
-    craftsmanship =     {name = "Craftsmanship", governing_stat = 'strength', perk_id = '2f2b9d82-9a91-40f0-bedb-ab53cb333127', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
-    heavy_weapons =     {name = "Heavy Weapons", governing_stat = 'strength', perk_id = '52a593f8-3fc7-46d8-a389-4ca47cd3a22e', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
-    survival =          {name = "Survival",      governing_stat = 'strength', perk_id = '1ede484d-b2bf-4c4b-a275-e9fa765bc7d3', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
-    weapon_large =      {name = "Polearms",      governing_stat = 'strength', perk_id = '98bb8ae8-1fc3-4ac0-8784-58106a421abf', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
-    fencing =           {name = "Warfare",       governing_stat = 'strength', perk_id = '4e0a8900-d9bc-49f8-bd36-fcded2c1ad79', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
-    marksmanship =      {name = "Marksmanship",  governing_stat = 'agility',  perk_id = '643ff10b-534d-4a1b-99ae-971fb085d1d8', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
-    stealth =           {name = "Stealth",       governing_stat = 'agility',  perk_id = '4d0d74ce-3e4e-4683-908e-61546b0b0b2e', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
-    thievery =          {name = "Thievery",      governing_stat = 'agility',  perk_id = '743554e5-5af4-4cd0-9844-f579c2020392', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
-    weapon_sword =      {name = "Swords",        governing_stat = 'agility',  perk_id = '9a28f2ca-c48c-4747-a574-c0d233144206', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
-    alchemy =           {name = "Alchemy",       governing_stat = 'speech',   perk_id = 'da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
-    houndmaster =       {name = "Houndmaster",   governing_stat = 'speech',   perk_id = 'c76cce08-5fa9-4441-a44e-01c5d4a4a9d9', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
-    scholarship =       {name = "Scholarship",   governing_stat = 'speech',   perk_id = '0341d739-e37b-4b10-84c2-eee6e323493c', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false},
-    drinking =          {name = "Drinking",      governing_stat = 'vitality', perk_id = 'e3da758a-3c05-4109-a7b9-8fa7bbf48824', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
-    horse_riding =      {name = "Horseriding",   governing_stat = 'vitality', perk_id = '89ac270e-20b2-4381-96d6-27cf791e944f', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
-    weapon_unarmed =    {name = "Unarmed",       governing_stat = 'vitality', perk_id = '93551fe9-bb0c-4242-8aea-8de2db44952e', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false},
+    strength =          {name = "Strength",      governing_stat = nil,        perk_id = '59fb8183-8474-4f60-aed0-eb6afe572e53', is_stat = true , limit = 20, perk_blocks_fully=true, perk_added=false, rpg_params_blocked=false},
+    agility =           {name = "Agility",       governing_stat = nil,        perk_id = '03b7b530-0f9d-41e6-996f-8a39bb0d070c', is_stat = true , limit = 20, perk_blocks_fully=true, perk_added=false, rpg_params_blocked=false},
+    vitality =          {name = "Vitality",      governing_stat = nil,        perk_id = '74251454-09b1-4c22-b36e-ac6177bc4c3b', is_stat = true , limit = 20, perk_blocks_fully=true, perk_added=false, rpg_params_blocked=false},
+    speech =            {name = "Speech",        governing_stat = nil,        perk_id = '77368463-bda8-4043-b872-dab47857580b', is_stat = true , limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
+    craftsmanship =     {name = "Craftsmanship", governing_stat = 'strength', perk_id = '2f2b9d82-9a91-40f0-bedb-ab53cb333127', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false, rpg_params_blocked=false},
+    heavy_weapons =     {name = "Heavy Weapons", governing_stat = 'strength', perk_id = '52a593f8-3fc7-46d8-a389-4ca47cd3a22e', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false, rpg_params_blocked=false},
+    survival =          {name = "Survival",      governing_stat = 'strength', perk_id = '1ede484d-b2bf-4c4b-a275-e9fa765bc7d3', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false, rpg_params_blocked=false},
+    weapon_large =      {name = "Polearms",      governing_stat = 'strength', perk_id = '98bb8ae8-1fc3-4ac0-8784-58106a421abf', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
+    fencing =           {name = "Warfare",       governing_stat = 'strength', perk_id = '4e0a8900-d9bc-49f8-bd36-fcded2c1ad79', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
+    marksmanship =      {name = "Marksmanship",  governing_stat = 'agility',  perk_id = '643ff10b-534d-4a1b-99ae-971fb085d1d8', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false, rpg_params_blocked=false},
+    stealth =           {name = "Stealth",       governing_stat = 'agility',  perk_id = '4d0d74ce-3e4e-4683-908e-61546b0b0b2e', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
+    thievery =          {name = "Thievery",      governing_stat = 'agility',  perk_id = '743554e5-5af4-4cd0-9844-f579c2020392', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
+    weapon_sword =      {name = "Swords",        governing_stat = 'agility',  perk_id = '9a28f2ca-c48c-4747-a574-c0d233144206', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false, rpg_params_blocked=false},
+    alchemy =           {name = "Alchemy",       governing_stat = 'speech',   perk_id = 'da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
+    houndmaster =       {name = "Houndmaster",   governing_stat = 'speech',   perk_id = 'c76cce08-5fa9-4441-a44e-01c5d4a4a9d9', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
+    scholarship =       {name = "Scholarship",   governing_stat = 'speech',   perk_id = '0341d739-e37b-4b10-84c2-eee6e323493c', is_stat = false, limit = 20, perk_blocks_fully=true, perk_added=false, rpg_params_blocked=false},
+    drinking =          {name = "Drinking",      governing_stat = 'vitality', perk_id = 'e3da758a-3c05-4109-a7b9-8fa7bbf48824', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
+    horse_riding =      {name = "Horseriding",   governing_stat = 'vitality', perk_id = '89ac270e-20b2-4381-96d6-27cf791e944f', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
+    weapon_unarmed =    {name = "Unarmed",       governing_stat = 'vitality', perk_id = '93551fe9-bb0c-4242-8aea-8de2db44952e', is_stat = false, limit = 20, perk_blocks_fully=false, perk_added=false, rpg_params_blocked=false},
 };
+
+StopLevelling.RPGParams = {
+    strength =          {"StrengthXPLevelBase","StrengthXPLevelDiff"},
+    agility =           {"AgilityXPLevelBase","AgilityXPLevelDiff","StatXPAgilityPerDodge","StatXPAgilityPerDodgeOutsideSlot","LockPickingAgilityXP","PickpocketingStartedAgilityXP","StatXpAgilityForStealth"},
+    vitality =          {"VitalityXPLevelBase","VitalityXPLevelDiff","StatXPVitalityPerDodge","StatXPVitalityPerKill","StatXPVitalityPerDistance","StatXPVitalityPerJump","StatXPVitalityPerVault","AthleticXPAwardDistance"},
+    speech =            {"SpeechXPLevelBase","SpeechXPLevelDiff","StatXPSpeechPerSequence","StatXPSpeechPersuadeCoerceSuccessMax","StatXPSpeechSkillCheckSuccessMax","StatXPSpeechSkillStatSkillCheckSuccessMax","StatXPSpeechSkillCheckFailMax","StatXPSpeechSkillStatSkillCheckFailMax","ReadingSpeechXPBase","ReadingSpeechXPScholarshipMultiplier"},
+    craftsmanship =     {"CraftsmanshipXPOverride","BlacksmithingEffectivityToXP","BlacksmithingFinishingXP","SharpeningFullPositiveHealthXP","SharpeningFullNegativeHealthXP","SkillXPUseRepairKit","WashItemsCraftsmanshipXpReward"},
+    heavy_weapons =     nil,
+    survival =          {"SurvivalXPOverride","HerbGatherXP","HunterXPKill","HunterXPLoot","SurvivalSkillXPPerDiscoveredPOI","SurvivalXpRewardPerCookedItem","SurvivalXpRewardPerDriedItem","SurvivalXpRewardPerSmokedItem"},
+    weapon_large =      nil,
+    fencing =           nil,
+    marksmanship =      {"XPShootingTargetHitMinDistance","XPShootingTargetHitDistanceMod","PrimaryStatXPShootingTargetHitPerDistance","SecondaryStatXPShootingTargetHitPerDistance","MarksmanshipSkillXPShootingTargetHitPerDistance"},
+    stealth =           {"StealthSneakBaseXp","PickpocketingStealthXP","LockPickingStealthXP","StealthAttackFailXp","StealthAttackMinXp","StealthAttackMaxXp","TheyWillNeverKnowPerkStealthXp","ItsaTrapPerkStealthXp"},
+    thievery =          {"ThieveryXPOverride","LockPickingSuccessXPMulCoef","LockPickingSuccessXPDivCoef","LockPickingFailRelativeXPMulCoef","PickpocketingXP","PickpocketingTreasurePriceXP","PickpocketingFailXPMod"},
+    weapon_sword =      nil,
+    alchemy =           {"AlchemyXPPerFailedBrewing","AlchemyXPMultiplierSecondQualityPotion","AlchemyXPMultiplierThirdQualityPotion","AlchemyXPOverride"},
+    houndmaster =       {"HoundmasterXPHit","HoundmasterXPKill","HoundmasterXPAnimalKill","HoundmasterXPFeed","HoundmasterXPPOIDiscovery","HoundmasterXPPlay","HoundmasterXPContextCommand","HoundmasterXPFetch","HoundmasterXPDistraction","HoundmasterXPPraise","HoundmasterXPOverride","DogFoundEventHoundmasterXp"},
+    scholarship =       {"ReadingXpPerHour","ReadingSpeechXPBase","ReadingSpeechXPScholarshipMultiplier","NonSkillBookXP"},
+    drinking =          {"SkillXPDrinkAlcohol"},
+    horse_riding =      {"HorseridingSkillXPForKillFromHorseback","HorseRidingXPPerDistance","HorseRidingXPOverride"},
+    weapon_unarmed =    nil,
+};
+
+
 
 StopLevelling.xp_trim_timer_id = nil;
 
@@ -340,6 +364,7 @@ function StopLevelling:trimxp()
         local xpToRemove = 0;
         local limit = v.limit;
         local noun = "Stat"
+        local attrRPGParms = nil;
 
         
         if v.is_stat then
@@ -361,6 +386,17 @@ function StopLevelling:trimxp()
                         System.LogAlways(string.format("$5[INFO][StopLevelling] adding XP blocking perk for %s %s (%s)", noun, statOrSkill, tostring(v.name)));
                         player.soul:AddPerk(v.perk_id)
                         v.perk_added = true;
+                    end
+                end
+
+                if not v.rpg_params_blocked then
+                    -- nullify RPG params for each stat or skill
+                    attrRPGParms = StopLevelling.RPGParams[statOrSkill];
+                    if attrRPGParms ~= nil then
+                        for _, rpgParam in ipairs(attrRPGParms) do
+                            RPG[rpgParam] = 0;
+                        end
+                        StopLevelling.data[statOrSkill]["rpg_params_blocked"] = true;
                     end
                 end
                 

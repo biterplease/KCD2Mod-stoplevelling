@@ -1,14 +1,16 @@
+<?xml version="1.0" encoding="us-ascii"?>
 <kcd_mod>
-  <info>
-    <name>Stop levelling</name>
-    <modid>biterplease_stop_levelling</modid>
-    <description>Control the max level of stats and skills.</description>
-    <author>biterplease</author>
-    <version>0.2.7</version>
-    <created_on>2025-03-06</created_on>
-    <dependencies></dependencies>
-  </info>
+	<info>
+		<name>Stop levelling</name>
+		<modid>biterplease_stop_levelling</modid>
+		<description>Control the max level of stats and skills.</description>
+		<author>biterplease</author>
+		<version>0.3.0</version>
+		<created_on>2025-03-06</created_on>
+		<modifies_level>false</modifies_level>
+	</info>
   <supports>
-    <kcd_version>1.1.*</kcd_version>
+    <kcd_version>1.2</kcd_version>
+    <kcd_version>1.2.*</kcd_version>
   </supports>
 </kcd_mod>
