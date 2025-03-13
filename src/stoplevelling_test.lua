@@ -24,8 +24,9 @@ UIAction["RegisterElementListener"] = function()
 end
 UIAction["RegisterEventSystemListener"] = function()
 end
+RPG = {};
 
-local StopLevelling = require "src.Data.Scripts.Systems.stoplevelling";
+local StopLevelling = require "src.Data.Scripts.mods.biterplease_stop_levelling";
 
 -- mock for player.soul methods
 player = {}
