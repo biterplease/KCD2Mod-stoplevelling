@@ -144,7 +144,7 @@ TestAddPerk = {
         StopLevelling:addPerk("alchemy");
         mockagne.verify(player.soul:AddPerk(TestAddPerk.dataSnapshot["alchemy"].perk_id))
         lu.assertIsTrue(StopLevelling.data["alchemy"].perk_added)
-        lu.assertTableContains(System.logBuffer, "$3[DEBUG][StopLevelling] Added XP blocking perk for Alchemy (key=alchemy)")
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] Added XP blocking perk for Skill Alchemy (key=alchemy)")
     end
     function TestAddPerk:tearDown()
         StopLevelling.data = TestAddPerk.dataSnapshot;
@@ -163,7 +163,7 @@ TestRemovePerk = {
             StopLevelling:removePerk('alchemy');
             mockagne.verify(player.soul:RemovePerk(TestRemovePerk.dataSnapshot['alchemy'].perk_id))
             lu.assertIsFalse(StopLevelling.data["alchemy"].perk_added)
-            lu.assertTableContains(System.logBuffer, "$3[DEBUG][StopLevelling] Removed XP blocking perk for Alchemy (key=alchemy)")
+            lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] Removed XP blocking perk for Skill Alchemy (key=alchemy)")
         end
         function TestRemovePerk:tearDown()
             StopLevelling.data = TestRemovePerk.dataSnapshot;
@@ -202,7 +202,7 @@ TestTrimXPOnStatWithXPModifier = {
         StopLevelling:trimxp();
         mockagne.verify(player.soul:AddPerk("59fb8183-8474-4f60-aed0-eb6afe572e53"));
         --assert logs
-        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Stat strength (Strength)")
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] Added XP blocking perk for Stat Strength (key=strength)")
     end
     function TestTrimXPOnStatWithXPModifier:tearDown()
         StopLevelling:setSkillLimitsInheritStats(
@@ -245,8 +245,8 @@ TestTrimXPOnStatWithoutXPModifier = {
             mockagne.verify(player.soul:AddPerk("77368463-bda8-4043-b872-dab47857580b"));
             mockagne.verify(player.soul:AddStatXP("speech", -25 )); -- 50%
             --assert logs
-            lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Stat speech (Speech)")
-            lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -25 XP for Stat speech (Speech)")
+            lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] Added XP blocking perk for Stat Speech (key=speech)")
+            lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] Trimming -25 XP for Stat Speech (key=speech)")
         end
         function TestTrimXPOnStatWithoutXPModifier:tearDown()
             StopLevelling:setSkillLimitsInheritStats(
@@ -287,7 +287,7 @@ TestTrimXPOnSkillWithXPModifier = {
         StopLevelling:trimxp();
         mockagne.verify(player.soul:AddPerk("2f2b9d82-9a91-40f0-bedb-ab53cb333127"));
         --assert logs
-        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Skill craftsmanship (Craftsmanship)")
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] Added XP blocking perk for Skill Craftsmanship (key=craftsmanship)")
     end
     function TestTrimXPOnSkillWithXPModifier:tearDown()
         StopLevelling:setSkillLimitsInheritStats(
@@ -326,13 +326,12 @@ TestTrimXPOnSkillWithoutXPModifier = {
         end
     end
     function TestTrimXPOnSkillWithoutXPModifier:testAlchemy()
-
         StopLevelling:trimxp();
         mockagne.verify(player.soul:AddPerk("da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2"));
         mockagne.verify(player.soul:AddSkillXP("alchemy", -25 ));
         --assert logs
-        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] adding XP blocking perk for Skill alchemy (Alchemy)")
-        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] trimming -25 XP for Skill alchemy (Alchemy)")
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] Added XP blocking perk for Skill Alchemy (key=alchemy)")
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] Trimming -25 XP for Skill Alchemy (key=alchemy)")
     end
     function TestTrimXPOnSkillWithoutXPModifier:tearDown()
         StopLevelling:setSkillLimitsInheritStats(
@@ -341,6 +340,81 @@ TestTrimXPOnSkillWithoutXPModifier = {
         player.soul = nil;
     end
 
+TestTrimXPRemovesPerkWhenUnderLimit = {
+    inheritValue = nil,
+    dataSnapshot = nil,
+}
+    function TestTrimXPRemovesPerkWhenUnderLimit:setUp()
+        self.inheritValue = StopLevelling.skills_limits_inherit_stats;
+        self.dataSnapshot = StopLevelling.data;
+        StopLevelling:setSkillLimitsInheritStats("false");
+        player.soul = mockagne.getMock()
+        -- setup
+        for k, v in pairs(StopLevelling.data) do
+            k = tostring(k)
+            if k == "alchemy" then
+                mockagne.when(player.soul:GetSkillLevel(k)).thenAnswer(10);
+                StopLevelling:setLimitValue(k, 25)
+                StopLevelling.data[k].perk_added = true;
+            else 
+                StopLevelling:setLimitValue(k, 25)
+                if v.is_stat then
+                    mockagne.when(player.soul:GetStatLevel(k)).thenAnswer(21);
+                else
+                    mockagne.when(player.soul:GetSkillLevel(k)).thenAnswer(21);
+                end
+            end
+        end
+    end
+    function TestTrimXPRemovesPerkWhenUnderLimit:testRemovesPerk()
+        StopLevelling:trimxp();
+        mockagne.verify(player.soul:RemovePerk("da9a2ea7-06c2-4b51-bd11-bc0be2c95cf2"));
+        lu.assertTableContains(System.logBuffer, "$5[INFO][StopLevelling] Removed XP blocking perk for Skill Alchemy (key=alchemy)")
+    end
+    function TestTrimXPRemovesPerkWhenUnderLimit:tearDown()
+        StopLevelling:setSkillLimitsInheritStats(
+            tostring(self.inheritValue));
+        StopLevelling.data = self.dataSnapshot;
+        player.soul = nil;
+    end
 
+TestSaveRPGParamDefaults = {
+    rpgSnapshot = {},
+    fakeParamName = "CraftsmanshipXPOverride"
+}
+    function TestSaveRPGParamDefaults:setUp()
+        self.rpgSnapshot = RPG;
+        RPG[self.fakeParamName] = 10;
+    end
+    function TestSaveRPGParamDefaults:test()
+        StopLevelling:saveRPGParamDefaults();
+        local got = StopLevelling.RPGParamDefaults[self.fakeParamName];
+        lu.assertEquals(got, self.rpgSnapshot[self.fakeParamName])
+    end
+    function TestSaveRPGParamDefaults:tearDown()
+        RPG = self.rpgSnapshot;
+    end
+
+TestRestoreRPGParamDefault = {
+    rpgSnapshot = {};
+    rpgDefaultsSnapshot = {},
+    fakeParamName = "CraftsmanshipXPOverride"
+}
+        function TestRestoreRPGParamDefault:setUp()
+            self.rpgSnapshot = RPG;
+            self.rpgDefaultsSnapshot = StopLevelling.RPGParamDefaults;
+            RPG[self.fakeParamName] = 10;
+            self.rpgDefaultsSnapshot[self.fakeParamName] = 100;
+        end
+        function TestRestoreRPGParamDefault:test()
+            StopLevelling:restoreRPGParamDefault(self.fakeParamName);
+            local got = RPG[self.fakeParamName];
+            lu.assertEquals(got, self.rpgDefaultsSnapshot[self.fakeParamName])
+        end
+        function TestRestoreRPGParamDefault:tearDown()
+            RPG = self.rpgSnapshot;
+            StopLevelling.RPGParamDefaults = self.rpgDefaultsSnapshot;
+        end
+    
 
 os.exit(lu.LuaUnit.run())

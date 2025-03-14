@@ -99,6 +99,7 @@ StopLevelling.RPGParams = {
     horse_riding =      {"HorseridingSkillXPForKillFromHorseback","HorseRidingXPPerDistance","HorseRidingXPOverride"},
     weapon_unarmed =    nil,
 };
+StopLevelling.RPGParamDefaults = {};
 
 
 
@@ -107,6 +108,7 @@ StopLevelling.xp_trim_timer_id = nil;
 
 function StopLevelling:init()
     System.LogAlways("$5[INFO][StopLevelling] StopLevelling Initialized");
+    StopLevelling:saveRPGParamDefaults();
     
     System.AddCCommand("STOPLEVELLING-SET-xp_trim_timer_period", "StopLevelling:setXpTrimTimerPeriod(%line)", "");
     System.AddCCommand("STOPLEVELLING-SET-skills_limits_inherit_stats", "StopLevelling:setSkillLimitsInheritStats(%line)", "");
@@ -145,6 +147,7 @@ function StopLevelling:init()
     System.AddCCommand("stoplevelling_init_timers", "StopLevelling:initTimers()", "")
     System.AddCCommand("stoplevelling_kill_timers", "StopLevelling:killTimers()", "")
 end
+
 
 
 --
@@ -336,7 +339,26 @@ function StopLevelling:setLimitValue(statOrSkillKey, line)
     end
 end
 
+-- saves original RPG Param values in StopLevelling.RPGParamDefaults.
+function StopLevelling:saveRPGParamDefaults()
+    local attrRPGParms = nil;
+    for statOrSkill in pairs(StopLevelling.data) do
+        attrRPGParms = StopLevelling.RPGParams[statOrSkill];
+        if attrRPGParms ~= nil then
+            for _, rpgParam in ipairs(attrRPGParms) do
+                StopLevelling.RPGParamDefaults[rpgParam] = RPG[rpgParam];
+            end
+        end
+        attrRPGParms = nil;
+    end
+end
 
+function StopLevelling:restoreRPGParamDefault(rpgParam)
+    local value = StopLevelling.RPGParamDefaults[rpgParam];
+    if value ~= nil then
+        RPG[tostring(rpgParam)] = value;
+    end
+end
 
 function StopLevelling:limits()
     System.LogAlways("$3[DEBUG][StopLevelling] Stat limits:");
@@ -383,9 +405,7 @@ function StopLevelling:trimxp()
                 local alreadyHasPerk = player.soul:HasPerk(v.perk_id, false);
                 if alreadyHasPerk ~= nil then
                     if not alreadyHasPerk and not v.perk_added then
-                        System.LogAlways(string.format("$5[INFO][StopLevelling] adding XP blocking perk for %s %s (%s)", noun, statOrSkill, tostring(v.name)));
-                        player.soul:AddPerk(v.perk_id)
-                        v.perk_added = true;
+                        StopLevelling:addPerk(statOrSkill);
                     end
                 end
 
@@ -420,13 +440,28 @@ function StopLevelling:trimxp()
                     -- only > 20% progress, above limit level, gets XP trimmed
                     if currentProgress ~= nil and currentLevel ~= nil then
                         if currentProgress >= 0.15 and currentLevel >= limit then
-                            System.LogAlways(string.format("$5[INFO][StopLevelling] trimming %d XP for %s %s (%s)", xpToRemove, noun, statOrSkill, v.name));
+                            System.LogAlways(string.format("$5[INFO][StopLevelling] Trimming %d XP for %s %s (key=%s)", xpToRemove, noun, v.name, statOrSkill));
                             if v.is_stat then
                                 player.soul:AddStatXP(statOrSkill, xpToRemove);
                             else
                                 player.soul:AddSkillXP(statOrSkill, xpToRemove);
                             end
                         end
+                    end
+                end
+            else
+                -- corrective action, since buffs may temporarily put you over the limit
+                -- and add the perks / trim
+                if v.perk_added then
+                    StopLevelling:removePerk(statOrSkill);
+                end
+                if v.rpg_params_blocked then
+                    attrRPGParms = StopLevelling.RPGParams[statOrSkill];
+                    if attrRPGParms ~= nil then
+                        for _, rpgParam in ipairs(attrRPGParms) do
+                            StopLevelling:restoreRPGParamDefault(rpgParam);
+                        end
+                        StopLevelling.data[statOrSkill]["rpg_params_blocked"] = false;
                     end
                 end
             end
@@ -447,20 +482,28 @@ function StopLevelling:removeAllPerks()
 end
 
 function StopLevelling:addPerk(line)
+    local noun = "Stat";
     local entry = StopLevelling.data[tostring(line)];
     if entry ~= nil then
+        if not entry.is_stat then
+            noun = "Skill";
+        end
         player.soul:AddPerk(tostring(entry.perk_id))
         StopLevelling.data[tostring(line)].perk_added = true;
-        System.LogAlways(string.format("$3[DEBUG][StopLevelling] Added XP blocking perk for %s (key=%s)", tostring(entry.name), tostring(tostring(line))));
+        System.LogAlways(string.format("$5[INFO][StopLevelling] Added XP blocking perk for %s %s (key=%s)", noun, tostring(entry.name), tostring(line)));
     end
 end
 
 function StopLevelling:removePerk(line)
+    local noun = "Stat";
     local entry = StopLevelling.data[tostring(line)];
     if entry ~= nil then
+        if not entry.is_stat then
+            noun = "Skill";
+        end
         player.soul:RemovePerk(tostring(entry.perk_id));
         StopLevelling.data[tostring(line)].perk_added = false;
-        System.LogAlways(string.format("$3[DEBUG][StopLevelling] Removed XP blocking perk for %s (key=%s)", tostring(entry.name), tostring(tostring(line))));
+        System.LogAlways(string.format("$5[INFO][StopLevelling] Removed XP blocking perk for %s %s (key=%s)", noun, tostring(entry.name), tostring(line)));
     end
 end
 

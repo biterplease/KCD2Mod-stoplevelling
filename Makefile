@@ -29,10 +29,14 @@ build:
 		./biterplease_stop_levelling/mod.cfg
 
 buildtogame: build
+	@rm -f "${MODSDIR}/biterplease_stop_levelling/Data/StopLevelling.pak"
 	@cp "${EXPORTDIR}/Data/StopLevelling.pak" "${MODSDIR}/biterplease_stop_levelling/Data/"
+	@rm -f "${MODSDIR}/biterplease_stop_levelling/Localization/English_xml.pak"
 	@cp "${EXPORTDIR}/Localization/English_xml.pak" "${MODSDIR}/biterplease_stop_levelling/Localization/"
-	@cp "${EXPORTDIR}/mod.cfg" "${MODSDIR}/biterplease_stop_levelling/mod.cfg"
-	@cp "${EXPORTDIR}/mod.manifest" "${MODSDIR}/biterplease_stop_levelling/mod.manifest"
+	@rm -f "${MODSDIR}/biterplease_stop_levelling/mod.cfg"
+	@cp "${EXPORTDIR}/mod.cfg" "${MODSDIR}/biterplease_stop_levelling/"
+	@rm -f "${MODSDIR}/biterplease_stop_levelling/mod.manifest"
+	@cp "${EXPORTDIR}/mod.manifest" "${MODSDIR}/biterplease_stop_levelling/"
 
 test:
 	@lua -l ${LUA_INIT} ./src/stoplevelling_test.lua -v
