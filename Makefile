@@ -1,8 +1,9 @@
-.PHONY: build test
+.PHONY: build test build-local
 MODID := biterplease_stop_levelling
 EXPORTDIR := ./${MODID}
-MODSDIR := /mnt/c/Steam/steamapps/common/KingdomComeDeliverance2/Mods
-LANGUAGES := English
+GAMEDIR := /mnt/c/Steam/steamapps/common/KingdomComeDeliverance2
+MODSDIR := ${GAMEDIR}/Mods
+LANGUAGES := English Spanish
 LUA_INIT := "src/setup_test"
 
 build:
@@ -11,12 +12,12 @@ build:
 	@cp ./src/mod.cfg "${EXPORTDIR}/"
 	@cp ./src/mod.manifest "${EXPORTDIR}/"
 	@for lang in ${LANGUAGES}; do \
-		cp "./src/Localization/text_ui_soul__stoplevelling_$${lang}".xml \
-			./src/Localization/text_ui_soul__stoplevelling.xml; \
+		cp "./src/Localization/text_ui_soul__${MODID}_$${lang}".xml \
+			./src/Localization/text_ui_soul__${MODID}.xml; \
 		7z a -tzip "${EXPORTDIR}/Localization/$${lang}_xml.pak" \
-			./src/Localization/text_ui_soul__stoplevelling.xml \
+			./src/Localization/text_ui_soul__${MODID}.xml \
 			-r -mtm=off -mtc=off -mta=off; \
-		rm ./src/Localization/text_ui_soul__stoplevelling.xml; \
+		rm ./src/Localization/text_ui_soul__${MODID}.xml; \
 	done
 	@7z a -tzip "${EXPORTDIR}/Data/StopLevelling.pak" \
 		./src/Data/Scripts \
@@ -25,17 +26,20 @@ build:
 
 	@zip ./zips/StopLevelling.zip \
 		./${MODID}/Data/StopLevelling.pak \
-		./${MODID}/Localization/English_xml.pak \
+		./${MODID}/Localization/*.pak \
 		./${MODID}/mod.manifest \
 		./${MODID}/mod.cfg
 
-buildtogame: build
+build-local: build
 	@rm -rf "${MODSDIR}/${MODID}"
 	@mkdir -p "${MODSDIR}/${MODID}/Data" "${MODSDIR}/${MODID}/Localization"
 	@cp "${EXPORTDIR}/Data/StopLevelling.pak" "${MODSDIR}/${MODID}/Data/"
-	@cp "${EXPORTDIR}/Localization/English_xml.pak" "${MODSDIR}/${MODID}/Localization/"
+	for lang in ${LANGUAGES}; do \
+		cp "${EXPORTDIR}/Localization/$${lang}_xml.pak" "${MODSDIR}/${MODID}/Localization/"; \
+	done
 	@cp "${EXPORTDIR}/mod.cfg" "${MODSDIR}/${MODID}/"
 	@cp "${EXPORTDIR}/mod.manifest" "${MODSDIR}/${MODID}/"
+	${GAMEDIR}/Bin/Win64MasterMasterSteamPGO/KingdomCome.exe -devmode +exec user.cfg
 
 test:
 	@lua -l ${LUA_INIT} ./src/stoplevelling_test.lua -v
