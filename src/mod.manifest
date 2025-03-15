@@ -5,7 +5,7 @@
 		<modid>biterplease_stop_levelling</modid>
 		<description>Control the max level of stats and skills.</description>
 		<author>biterplease</author>
-		<version>0.3.0</version>
+		<version>0.3.1</version>
 		<created_on>2025-03-06</created_on>
 		<modifies_level>false</modifies_level>
 	</info>
