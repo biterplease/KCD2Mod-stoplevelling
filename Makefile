@@ -1,5 +1,6 @@
 .PHONY: build test
-EXPORTDIR := ./biterplease_stop_levelling
+MODID := biterplease_stop_levelling
+EXPORTDIR := ./${MODID}
 MODSDIR := /mnt/c/Steam/steamapps/common/KingdomComeDeliverance2/Mods
 LANGUAGES := English
 LUA_INIT := "src/setup_test"
@@ -23,18 +24,18 @@ build:
 		-r -mtm=off -mtc=off -mta=off
 
 	@zip ./zips/StopLevelling.zip \
-		./biterplease_stop_levelling/Data/StopLevelling.pak \
-		./biterplease_stop_levelling/Localization/English_xml.pak \
-		./biterplease_stop_levelling/mod.manifest \
-		./biterplease_stop_levelling/mod.cfg
+		./${MODID}/Data/StopLevelling.pak \
+		./${MODID}/Localization/English_xml.pak \
+		./${MODID}/mod.manifest \
+		./${MODID}/mod.cfg
 
 buildtogame: build
-	@rm -rf "${MODSDIR}/biterplease_stop_levelling"
-	@mkdir -p "${MODSDIR}/biterplease_stop_levelling/Data" "${MODSDIR}/biterplease_stop_levelling/Localization"
-	@cp "${EXPORTDIR}/Data/StopLevelling.pak" "${MODSDIR}/biterplease_stop_levelling/Data/"
-	@cp "${EXPORTDIR}/Localization/English_xml.pak" "${MODSDIR}/biterplease_stop_levelling/Localization/"
-	@cp "${EXPORTDIR}/mod.cfg" "${MODSDIR}/biterplease_stop_levelling/"
-	@cp "${EXPORTDIR}/mod.manifest" "${MODSDIR}/biterplease_stop_levelling/"
+	@rm -rf "${MODSDIR}/${MODID}"
+	@mkdir -p "${MODSDIR}/${MODID}/Data" "${MODSDIR}/${MODID}/Localization"
+	@cp "${EXPORTDIR}/Data/StopLevelling.pak" "${MODSDIR}/${MODID}/Data/"
+	@cp "${EXPORTDIR}/Localization/English_xml.pak" "${MODSDIR}/${MODID}/Localization/"
+	@cp "${EXPORTDIR}/mod.cfg" "${MODSDIR}/${MODID}/"
+	@cp "${EXPORTDIR}/mod.manifest" "${MODSDIR}/${MODID}/"
 
 test:
 	@lua -l ${LUA_INIT} ./src/stoplevelling_test.lua -v
