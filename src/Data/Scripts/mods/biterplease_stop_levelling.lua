@@ -1,5 +1,7 @@
-System.LogAlways("$5[INFO][StopLevelling] ### STOP LEVELLING ###");
-StopLevelling = {};
+StopLevelling = {
+    version = "v0.3.1"
+};
+System.LogAlways(string.format("$5[INFO][StopLevelling] ### STOP LEVELLING %s ###", StopLevelling.version));
 
 -- ########################################
 --      Stop levelling USER editable
@@ -107,7 +109,7 @@ StopLevelling.xp_trim_timer_id = nil;
 
 
 function StopLevelling:init()
-    System.LogAlways("$5[INFO][StopLevelling] StopLevelling Initialized");
+    System.LogAlways(string.format("$5[INFO][StopLevelling] StopLevelling %s Initialized", self.version));
     StopLevelling:saveRPGParamDefaults();
     
     System.AddCCommand("STOPLEVELLING-SET-xp_trim_timer_period", "StopLevelling:setXpTrimTimerPeriod(%line)", "");
